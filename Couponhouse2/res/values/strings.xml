@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Coups</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="facebook_app_id">288824171291312</string>
+    <string name="menu_settings">Settings</string>
+    <string name="share">Share</string>
+    <string name="kakao_app_key">14fdf1f3cb02f2de1dd3dedf5a66ba12</string>
+    <string name="kakao_scheme">kakao14fdf1f3cb02f2de1dd3dedf5a66ba12</string>
+    <string name="kakaolink_host">Coups</string>
+</resources>

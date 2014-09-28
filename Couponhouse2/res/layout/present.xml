@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="end"
+    android:orientation="vertical" >
+    
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/abc_cab_background_bottom_holo_light" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/bar1" />
+    
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button4"
+        android:layout_below="@+id/button2"
+        android:layout_weight="0.89" />
+
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="선물하기" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="도장쿠폰 선물하기"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000000"
+        android:textSize="25dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="15dp"
+        android:layout_toLeftOf="@+id/discouponlist"
+        android:text="보유한 다모은 도장쿠폰 목록" />
+
+    <Button
+        android:id="@+id/discouponlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@android:id/list"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/button2"
+        android:text="보유한 할인쿠폰 목록" />
+
+</RelativeLayout>
