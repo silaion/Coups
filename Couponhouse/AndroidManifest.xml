@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.coups"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="21" />
+    
+    <uses-permission android:name="android.permission.INTERNET"/>
+ 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+ 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.example.coups.permission.C2D_MESSAGE"/>	 
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+	<permission android:name="com.example.coups.permission.C2D_MESSAGE" 
+	    android:protectionLevel="signature" />
+
+    <application 
+        android:icon="@drawable/ic_launcher" 
+        android:label="@string/app_name">
+        <receiver 
+			android:name="com.google.android.gcm.GCMBroadcastReceiver"
+			android:permission="com.google.android.c2dm.permission.SEND">
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				<category android:name="com.example.myapp" />
+			</intent-filter>
+		</receiver>
+		<service android:name=".GCMIntentService"></service>
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+                android:name="com.kakao.sdk.AppKey"
+                android:value="@string/kakao_app_key" />
+        
+        <activity android:name=".MainActivity"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+		<activity android:name=".SplashActivity"
+				android:screenOrientation="portrait"
+				android:configChanges="orientation|keyboardHidden"
+				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+				/>
+		<activity android:name="FirstActivity"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        </activity>
+        
+		<activity android:name="ThirdActivity"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        </activity>
+        
+		<activity android:name="SecondActivity"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+		    
+		</activity>
+		<activity android:name="AlarmActivity"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		<activity android:name="LeaveActivity"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		<activity android:name="PresentActivity"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		<activity android:name="InfoActivity"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		<activity android:name="MapActivity"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		<activity android:name="Tabview"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		<activity android:name="TabOneActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="TabTwoActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="TabThrActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="TabFouActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="TabFivActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="InfoclickActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="CouponclickActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="DisclickActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="DiscountActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="CoDelActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="SnsActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="BuyActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="BuytwoActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="PresentTwoActivity"
+		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		<activity android:name="usediscouponlistActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="PaymentActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name="AlarmadjustActivity"
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
+		<activity android:name=".TwitterLoad">
+		     <intent-filter>
+                 <action android:name="android.intent.action.VIEW" />
+                 <category android:name="android.intent.category.DEFAULT" />
+                 <category android:name="android.intent.category.BROWSABLE" />
+                 <data android:scheme="coups" android:host="twitter" />
+             </intent-filter>
+		</activity>
+		<activity android:name="CouponBenefitActivity"
+          android:theme="@android:style/Theme.NoTitleBar"></activity> 
+		
+		<activity android:name=".widget.TabOneActivity" /> 
+		<activity android:name=".widget.TabTwoActivity" />
+		<activity android:name=".widget.TabThrActivity" /> 
+		<activity android:name=".widget.TabFouActivity" />
+		<activity android:name=".widget.TabFivActivity" /> 
+				
+    </application>
+
+</manifest>
