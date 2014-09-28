@@ -8,7 +8,7 @@ package com.kakao.sdk;
 
 public final class R {
 	public static final class string {
-		public static final int com_kakao_alert_appKey = 0x7f050000;
-		public static final int com_kakao_alert_install_kakaotalk = 0x7f050001;
+		public static final int com_kakao_alert_appKey = 0x7f08001a;
+		public static final int com_kakao_alert_install_kakaotalk = 0x7f08001b;
 	}
 }

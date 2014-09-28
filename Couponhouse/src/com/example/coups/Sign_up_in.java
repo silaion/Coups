@@ -29,7 +29,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Toast;
+import android.util.Log;
 
 public class Sign_up_in {
 	
@@ -119,7 +119,7 @@ public class Sign_up_in {
             	context.startActivity(intent);
             }
             else if(result.equals("삽입성공")){
-            	System.out.println("삽입 성공");
+            	Log.d("InsertAction", "삽입 성공!!");
             }
             else if(result.equals("삭제성공")){
             	System.out.println("삭제 성공");
@@ -127,8 +127,7 @@ public class Sign_up_in {
             	context.startActivity(intent);
             }
             else {
-            	System.out.println("실패");
-            	Toast.makeText(context, "해당 프로세스를 실행하지 못했습니다.", Toast.LENGTH_LONG);
+            	Log.d("로그인 과정 실패 ", result);
             }
         }
 

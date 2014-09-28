@@ -1,11 +1,16 @@
 package com.example.coups;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Debug;
+import android.view.KeyEvent;
 import android.widget.TabHost;
+import android.widget.Toast;
 import android.widget.TabHost.TabSpec;
 
 public class Tabview extends TabActivity {
@@ -48,7 +53,29 @@ public class Tabview extends TabActivity {
     	tabHost.getTabWidget().getChildAt(3).setBackgroundColor(Color.parseColor("#00BFFF"));
     	tabHost.getTabWidget().getChildAt(4).setBackgroundColor(Color.parseColor("#00BFFF"));
     	tabHost.setCurrentTab(0);
-	
+    	
 	}
-
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+       switch(keyCode) {
+         case KeyEvent.KEYCODE_BACK:
+        	 Toast.makeText(this, "뒤로가기버튼 눌림", Toast.LENGTH_SHORT).show();
+           new AlertDialog.Builder(this)
+           .setTitle("프로그램 종료")
+           .setMessage("프로그램을 종료 하시겠습니까?")
+           .setPositiveButton("예", new DialogInterface.OnClickListener() {
+        	   @Override
+        	   public void onClick(DialogInterface dialog, int whichButton) {
+                             finish();
+                           }
+                         })
+                         .setNegativeButton("아니오", null)
+                         .show();
+                         break;
+         default:
+           break;
+      }
+       return super.onKeyDown(keyCode, event);
+	}
 }

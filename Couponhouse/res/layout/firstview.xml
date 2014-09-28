@@ -87,6 +87,7 @@
 	            android:layout_alignRight="@+id/editText4"
 	            android:layout_alignTop="@+id/textView3"
 	            android:layout_toRightOf="@+id/textView4"
+	            android:checkedButton="@+id/rd1"
 	            android:orientation="horizontal" >
 
 	            <RadioButton

@@ -9,6 +9,7 @@
         android:targetSdkVersion="21" />
     
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
  	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
  	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="com.example.coups.permission.C2D_MESSAGE"/>	 
@@ -30,6 +31,7 @@
 			</intent-filter>
 		</receiver>
 		<service android:name=".GCMIntentService"></service>
+		<service android:name=".VibrateService"></service>
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data
                 android:name="com.kakao.sdk.AppKey"

@@ -11,13 +11,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
@@ -83,8 +87,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 //        Log.e("키를 제거합니다.(GCM INTENTSERVICE)","제거되었습니다.");
 //    }
 //여기까지
-    String gcm_msg = null;
+    static String gcm_msg = null;
     public ServerRequest serverRequest_insert = null;
+    NotificationManager nm;
+    Notification mNoti;
+    static PendingIntent pIntent;
 
     // GCM에 정상적으로 등록되었을경우 발생하는 메소드
     @Override
@@ -94,7 +101,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 
         HashMap<Object, Object> param = new HashMap<Object, Object>();
         param.put("regid", arg1);
-        serverRequest_insert = new ServerRequest("http://112.172.217.74:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler);
+        //serverRequest_insert = new ServerRequest("http://112.172.217.74:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler);
+        serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler);
         serverRequest_insert.start();
     }
 
@@ -111,9 +119,11 @@ public class GCMIntentService extends GCMBaseIntentService {
             if (result.equals("success")) {
 //                Toast.makeText(ThirdActivity.mContext,"데이터베이스에 regid가 등록되었습니다.", Toast.LENGTH_LONG).show();
 //                Toast.makeText(FirstActivity.mContext,"데이터베이스에 regid가 등록되었습니다.", Toast.LENGTH_LONG).show();
+            	Log.d("regid", "데이터베이스에 regid가 등록되었습니다.");
             } else {
 //            	Toast.makeText(ThirdActivity.mContext,"데이터베이스에 regid가 등록되지 않았습니다.", Toast.LENGTH_LONG).show();
 //                Toast.makeText(FirstActivity.mContext,"데이터베이스에 regid가 등록되지 않았습니다.", Toast.LENGTH_LONG).show();
+            	Log.d("regid", "데이터베이스에 regid가 등록되지 않았습니다.");
             }
         }
     };
@@ -135,7 +145,8 @@ public class GCMIntentService extends GCMBaseIntentService {
             } else {
                 bundle.putString("result", "fail");
             }
-
+            
+            String msg = message.getData().getString("result");
             message.setData(bundle);
             mHandler.sendMessage(message);
             return null;
@@ -153,10 +164,38 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onMessage(Context arg0, Intent arg1) {
         // TODO Auto-generated method stub
-        Log.d("test", "메시지가 왔습니다 : " + arg1.getExtras().getString("test"));
-        gcm_msg = arg1.getExtras().getString("test");
+    	gcm_msg = arg1.getExtras().getString("test");
+    	
+    	try {
+    		Vibrator vibrator = 
+    		 (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
+    		vibrator.vibrate(1000);
+    		setNotification(arg0, gcm_msg);
+    	} catch (Exception e) {
+    		Log.e("GCM_onMessage", "failed");
+    	}
+    	
+        Log.d("test", "메시지가 왔습니다 : " + gcm_msg);
         showMessage();
-
+    }
+    
+    private void setNotification(Context context, String message){
+    	NotificationManager nm;
+    	Notification mNoti;
+    	try{
+    		nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    		PendingIntent pIntent = PendingIntent.getActivity(context, 0, new Intent(context, TabOneActivity.class), 0);
+    		mNoti = new NotificationCompat.Builder(getApplicationContext())
+			.setContentTitle(gcm_msg)
+			.setAutoCancel(true)
+			.setContentIntent(pIntent)
+			.build();
+    		
+    		nm.notify(7, mNoti);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		Log.d("GCM_setNotification", "failed");
+    	}
     }
 
 
@@ -173,7 +212,6 @@ public class GCMIntentService extends GCMBaseIntentService {
         Log.d("test", "GCM서비스 생성자 실행");
     }
 
-
     public void showMessage() {
         Thread thread = new Thread(new Runnable() {
             public void run() {
@@ -185,8 +223,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-            Toast.makeText(FirstActivity.mContext, "수신 메시지 : " + gcm_msg, Toast.LENGTH_LONG).show();
-            Toast.makeText(ThirdActivity.mContext, "수신 메시지 : " + gcm_msg, Toast.LENGTH_LONG).show();
+//            Toast.makeText(FirstActivity.mContext, "수신 메시지 : " + gcm_msg, Toast.LENGTH_LONG).show();
+//            Toast.makeText(ThirdActivity.mContext, "수신 메시지 : " + gcm_msg, Toast.LENGTH_LONG).show();
+        	Log.d("GCM_handler", "수신 메시지 : " + gcm_msg);
         }
     };
 }
