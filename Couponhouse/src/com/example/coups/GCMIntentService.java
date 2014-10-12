@@ -190,8 +190,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			.setAutoCancel(true)
 			.setContentIntent(pIntent)
 			.build();
-    		
-    		nm.notify(7, mNoti);
+    		nm.notify(0, mNoti);
     	}catch(Exception e){
     		e.printStackTrace();
     		Log.d("GCM_setNotification", "failed");
