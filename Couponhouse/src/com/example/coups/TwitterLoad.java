@@ -48,7 +48,7 @@ public class TwitterLoad extends Activity{
     @Override
     protected void onNewIntent(Intent intent){
         Log.d("myLog", "onNewIntent");
-        // WEB ¿¡¼­ ÀÎÁõÀ» ¸¶Ä¡°Å³ª, ÀÎÁõÇÏÁö ¾Ê°í ¾ÛÀ¸·Î µ¹¾Æ¿Â °æ¿ì ÀÌÂÊÀ¸·Î ¶³¾îÁö°Ô µË´Ï´Ù.
+        // WEB ì—ì„œ ì¸ì¦ì„ ë§ˆì¹˜ê±°ë‚˜, ì¸ì¦í•˜ì§€ ì•Šê³  ì•±ìœ¼ë¡œ ëŒì•„ì˜¨ ê²½ìš° ì´ìª½ìœ¼ë¡œ ë–¨ì–´ì§€ê²Œ ë©ë‹ˆë‹¤.
         super.onNewIntent(intent);
 
         uri = intent.getData();
@@ -64,21 +64,21 @@ public class TwitterLoad extends Activity{
         Log.d("myLog", "accessToken :" + accessToken);
 
         if (null != accessToken){
-            // SharedPreferences ¿¡ ÀúÀåµÈ access token ÀÌ ÀÖÀ¸¸é
-            // Twitter °´Ã¼¿¡ access token À» ¼³Á¤ÇØ ÁÖ°í ¹Ù·Î message ¸¦ Àü¼ÛÇÕ´Ï´Ù.
+            // SharedPreferences ì— ì €ì¥ëœ access token ì´ ìˆìœ¼ë©´
+            // Twitter ê°ì²´ì— access token ì„ ì„¤ì •í•´ ì£¼ê³  ë°”ë¡œ message ë¥¼ ì „ì†¡í•©ë‹ˆë‹¤.
             mTwitter.setOAuthAccessToken(accessToken);
             //TWITTER_UpdateStatus();
             updateTask = new updateTask().execute();
         } else{
-            // SharedPreferences ¿¡ ÀúÀåµÈ accesstoken ÀÌ ¾øÀ¸¸é ÀÎÁõ ÀıÂ÷¸¦ ÁøÇàÇÏ°Ô µË´Ï´Ù.
+            // SharedPreferences ì— ì €ì¥ëœ accesstoken ì´ ì—†ìœ¼ë©´ ì¸ì¦ ì ˆì°¨ë¥¼ ì§„í–‰í•˜ê²Œ ë©ë‹ˆë‹¤.
             try{
-                // request token À» ¾ò¾î¿É´Ï´Ù.
+                // request token ì„ ì–»ì–´ì˜µë‹ˆë‹¤.
                 requestToken = mTwitter.getOAuthRequestToken(TWITTER_CALLBACK_URL.toString());
                 System.out.println(TWITTER_CALLBACK_URL.toString());
             } catch (TwitterException te){
                 te.printStackTrace();
             }
-            // WEB OAuth ÀÎÁõÀ» ÁøÇàÇÏ±â À§ÇØ Browser ¸¦ È£ÃâÇÕ´Ï´Ù.
+            // WEB OAuth ì¸ì¦ì„ ì§„í–‰í•˜ê¸° ìœ„í•´ Browser ë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(requestToken.getAuthorizationURL())));
         }
     }
@@ -87,7 +87,7 @@ public class TwitterLoad extends Activity{
         if (null == mTwitter){
 
             mTwitter = new TwitterFactory().getInstance();
-            // twitter instance ¿¡ ¾ÛÀÇ key ¸¦ µî·Ï ÇØ Áİ´Ï´Ù.
+            // twitter instance ì— ì•±ì˜ key ë¥¼ ë“±ë¡ í•´ ì¤ë‹ˆë‹¤.
             mTwitter.setOAuthConsumer(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET);
         }
     }
@@ -105,7 +105,7 @@ public class TwitterLoad extends Activity{
     }
 
     private AccessToken Twitter_LoadAccessToken(long a_lUseID){
-    	Log.d("myLog", "LoadAccessToken");
+        Log.d("myLog", "LoadAccessToken");
 
         AccessToken insAccessToken = null;
         String strToken = null;
@@ -120,22 +120,22 @@ public class TwitterLoad extends Activity{
         System.out.println(strTokenSecret);
 
 
-        if (null != strToken 
-        		&& null != strTokenSecret 
-        		&& !"".equals(strToken)
+        if (null != strToken
+                && null != strTokenSecret
+                && !"".equals(strToken)
                 && !"".equals(strTokenSecret)){
 
             try {
-				insAccessToken = mTwitter.getOAuthAccessToken(strToken, strTokenSecret);
-			} catch (TwitterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                insAccessToken = mTwitter.getOAuthAccessToken(strToken, strTokenSecret);
+            } catch (TwitterException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
         } else{
             Log.v("myLog", "Twitter_LoadAccessToken() ## There's no saved strToken, strTokenSecret data");
         }
-        
+
         return insAccessToken;
     }
 
@@ -165,7 +165,7 @@ public class TwitterLoad extends Activity{
         strContent = msg + " " + url;
         strTwitterID = "RECEIVER_ID";
         try{
-            // Æ¯Á¤ ID ¿¡°Ô message ¸¦ º¸³»º¾´Ï´Ù.
+            // íŠ¹ì • ID ì—ê²Œ message ë¥¼ ë³´ë‚´ë´…ë‹ˆë‹¤.
             mTwitter.updateStatus(strContent);
             //finish();
         } catch (TwitterException te){
@@ -173,15 +173,15 @@ public class TwitterLoad extends Activity{
                 strError = null;
                 strError = te.getErrorMessage();
                 if (true == strError.contains("duplicate"))
-                    errorMsg = "ÀÌ¹Ì Æ®À§ÅÍ¿¡ µî·ÏµÇ¾ú½À´Ï´Ù.";
+                    errorMsg = "ì´ë¯¸ íŠ¸ìœ„í„°ì— ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.";
                 else if (true == strError.contains("140"))
-                    errorMsg = "µî·ÏÀÌ ½ÇÆĞÇÏ¿´½À´Ï´Ù.! 140ÀÚ°¡ ³Ñ¾ú½À´Ï´Ù.!";
+                    errorMsg = "ë“±ë¡ì´ ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.! 140ìê°€ ë„˜ì—ˆìŠµë‹ˆë‹¤.!";
                 else{
-                	
+
                 }
                 finish();
             } else if (HttpResponseCode.UNAUTHORIZED == te.getStatusCode()){
-                errorMsg = "ÀÎÁõ ¿À·ùÀÔ´Ï´Ù!";
+                errorMsg = "ì¸ì¦ ì˜¤ë¥˜ì…ë‹ˆë‹¤!";
                 finish();
             }
             te.printStackTrace();
@@ -227,7 +227,7 @@ public class TwitterLoad extends Activity{
         @Override
         protected void onPostExecute(Void result) {
             if (errorMsg.equals("")) {
-                Toast.makeText(TwitterLoad.this, "Æ®À§ÅÍ °øÀ¯°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TwitterLoad.this, "íŠ¸ìœ„í„° ê³µìœ ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤", Toast.LENGTH_SHORT).show();
             } else {
 
                 Toast.makeText(TwitterLoad.this, errorMsg, Toast.LENGTH_SHORT).show();
@@ -243,28 +243,28 @@ public class TwitterLoad extends Activity{
         }
         @Override
         protected Void doInBackground(String... params) {
-        	Log.d("myLog", "in newIntentTask");
+            Log.d("myLog", "in newIntentTask");
             if (null != uri && TWITTER_CALLBACK_URL.getScheme().equals(uri.getScheme())){
-            // ³»°¡ º¸³½ URI Scheme °ú µ¿ÀÏÇÏ¸é
-                String strOAuthVerifier = uri.getQueryParameter("oauth_verifier");    // oauth_verifier ·Î ³Ñ¾î¿É´Ï´Ù.
-                // twitter ÀÎÁõ page¿¡¼­ ÀÎÁõÇÏÁö ¾Ê°í ¾ÛÀ¸·Î ÀÌµ¿ ¸µÅ©¸¦ Å¬¸¯ÇØ¼­ ¹Ù·Î µ¹¾Æ¿À¸é strOAuthVerifier == null ÀÌ¹Ç·Î ¿¹¿ÜÃ³¸®
+                // ë‚´ê°€ ë³´ë‚¸ URI Scheme ê³¼ ë™ì¼í•˜ë©´
+                String strOAuthVerifier = uri.getQueryParameter("oauth_verifier");    // oauth_verifier ë¡œ ë„˜ì–´ì˜µë‹ˆë‹¤.
+                // twitter ì¸ì¦ pageì—ì„œ ì¸ì¦í•˜ì§€ ì•Šê³  ì•±ìœ¼ë¡œ ì´ë™ ë§í¬ë¥¼ í´ë¦­í•´ì„œ ë°”ë¡œ ëŒì•„ì˜¤ë©´ strOAuthVerifier == null ì´ë¯€ë¡œ ì˜ˆì™¸ì²˜ë¦¬
                 if (null == strOAuthVerifier) {
                     return null;
                 }
                 try {
-                	System.out.println(requestToken);
-                    // request token °ú oauth verifier ·Î access token À» ¾ò¾î¿É´Ï´Ù.
+                    System.out.println(requestToken);
+                    // request token ê³¼ oauth verifier ë¡œ access token ì„ ì–»ì–´ì˜µë‹ˆë‹¤.
                     accessToken = mTwitter.getOAuthAccessToken(requestToken, strOAuthVerifier);
-                    // ¾ò¾î¿Â access token Àº Shared Preference ¿¡ °íÀÌ ¸ğ¼Å µÓ´Ï´Ù.
+                    // ì–»ì–´ì˜¨ access token ì€ Shared Preference ì— ê³ ì´ ëª¨ì…” ë‘¡ë‹ˆë‹¤.
                     Twitter_StoreAccessToken(mTwitter.verifyCredentials().getId(), accessToken);
-                    // access token ÀÌ »ı°åÀ¸´Ï message ¸¦ Àü¼ÛÇÕ´Ï´Ù.
+                    // access token ì´ ìƒê²¼ìœ¼ë‹ˆ message ë¥¼ ì „ì†¡í•©ë‹ˆë‹¤.
                 } catch (TwitterException te){
                     Log.e("myLog", te.getMessage());
                 }
             }
             return null;
         }
-        
+
         @Override
         protected void onPostExecute(Void result) {
             updateTask = new updateTask().execute();

@@ -21,7 +21,7 @@ public class InfoclickActivity extends FragmentActivity {
             //onSessionStateChange(session, state, exception);
         }
     };
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +43,8 @@ public class InfoclickActivity extends FragmentActivity {
 
         twit = (Button)findViewById(R.id.twitter);
         twit.setOnClickListener(new View.OnClickListener(){
-			@Override
-        	public void onClick(View v){
+            @Override
+            public void onClick(View v){
                 Intent it = new Intent(InfoclickActivity.this, TwitterLoad.class);
                 it.putExtra("url", "https://play.google.com/store/apps/details?id=Coups");
                 it.putExtra("msg", "Coupon House");

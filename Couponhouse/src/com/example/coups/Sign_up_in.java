@@ -1,15 +1,11 @@
 package com.example.coups;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -24,32 +20,30 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.*;
+import java.util.ArrayList;
 
 public class Sign_up_in {
-	
-	Thread th;
-	Context context;
-	String name, phoneNum, birth, gender;
-	
-	public Sign_up_in(Context context, String name,String gender,String birth,String phoneNum){
-		this.context = context;
-		this.name = name;
-		this.gender = gender;
-		this.birth = birth;
-		this.phoneNum = phoneNum;
-	}
 
-	private ResponseHandler<String> responseHandler;
-	 //½º·¹µå Å¬·¡½º
-    //211.183.2.174:9000//login.action À¸·Î
-    //id¿Í pw ÆÄ¶ó¹ÌÅÍ¸¦ post¹æ½ÄÀ¸·Î Àü¼ÛÀ» ¿äÃ»ÇÏ°í Àü¼ÛÀÌ ³¡³ª¸é
-    //responseHandler¸¦ È£ÃâÇÏµµ·Ï ¼³Á¤¡Ú¡Ú¡Ú¡Ú
+    Thread th;
+    Context context;
+    String name, phoneNum, birth, gender;
+
+    public Sign_up_in(Context context, String name,String gender,String birth,String phoneNum){
+        this.context = context;
+        this.name = name;
+        this.gender = gender;
+        this.birth = birth;
+        this.phoneNum = phoneNum;
+    }
+
+    private ResponseHandler<String> responseHandler;
+    //ìŠ¤ë ˆë“œ í´ë˜ìŠ¤
+    //211.183.2.174:9000//login.action ìœ¼ë¡œ
+    //idì™€ pw íŒŒë¼ë¯¸í„°ë¥¼ postë°©ì‹ìœ¼ë¡œ ì „ì†¡ì„ ìš”ì²­í•˜ê³  ì „ì†¡ì´ ëë‚˜ë©´
+    //responseHandlerë¥¼ í˜¸ì¶œí•˜ë„ë¡ ì„¤ì •â˜…â˜…â˜…â˜…
     class ThreadEx extends Thread {
 
         private String url = "http://192.168.0.21:8081/gcm_jsp";
@@ -67,33 +61,33 @@ public class Sign_up_in {
 
         @Override
         public void run() {
-            //Àü¼ÛÀ» ¿äÃ»ÇÒ ÁÖ¼Ò¸¦ ¹®ÀÚ¿­·Î »ı¼º
+            //ì „ì†¡ì„ ìš”ì²­í•  ì£¼ì†Œë¥¼ ë¬¸ìì—´ë¡œ ìƒì„±
 
-            //¿äÃ»À» Ã³¸®ÇÏ±â  À§ÇÑ Å¬¶óÀÌ¾ğÆ® »ı¼º
+            //ìš”ì²­ì„ ì²˜ë¦¬í•˜ê¸°  ìœ„í•œ í´ë¼ì´ì–¸íŠ¸ ìƒì„±
             HttpClient http = new DefaultHttpClient();
             try {
 
-                //ÆÄ¶ó¹ÌÅÍ ¼³Á¤
+                //íŒŒë¼ë¯¸í„° ì„¤ì •
                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
-                //ÆÄ¶ó¹ÌÅÍ ¼³Á¤.
+                //íŒŒë¼ë¯¸í„° ì„¤ì •.
                 nameValuePairs.add(new BasicNameValuePair("name", name));
                 nameValuePairs.add(new BasicNameValuePair("gender", gender));
                 nameValuePairs.add(new BasicNameValuePair("birth", birth));
                 nameValuePairs.add(new BasicNameValuePair("phoneNum", phoneNum));
 
-                //Æ÷½ºÆ® ¹æ½ÄÀ¸·Î ¿äÃ»À» ÇÏ±â À§ÇÑ °´Ã¼ »ı¼º(Get¹æ½ÄÀÌ¸é Post ´ë½Å get)
+                //í¬ìŠ¤íŠ¸ ë°©ì‹ìœ¼ë¡œ ìš”ì²­ì„ í•˜ê¸° ìœ„í•œ ê°ì²´ ìƒì„±(Getë°©ì‹ì´ë©´ Post ëŒ€ì‹  get)
                 System.out.println(url+comment);
                 HttpPost httpPost = new HttpPost(url+comment);
-                //ÆÄ¶ó¹ÌÅÍ »ı¼º
+                //íŒŒë¼ë¯¸í„° ìƒì„±
                 UrlEncodedFormEntity entityRequest =
                         new UrlEncodedFormEntity(nameValuePairs, "UTF-8");
-                //ÆÄ¶ó¹ÌÅÍ¸¦ httpPost¿¡ ºÎÂø
+                //íŒŒë¼ë¯¸í„°ë¥¼ httpPostì— ë¶€ì°©
                 httpPost.setEntity(entityRequest);
 
-                //httpPost¿¡°Ô ¿äÃ»ÇÏ°í Àü¼ÛÀ» ¹ŞÀ¸¸é responseHandler¸¦ È£Ãâ.//responseHandler´Â loginProcessing ¸Ş¼­µå¿¡ µî·ÏµÇ¾îÀÖÀ½.
+                //httpPostì—ê²Œ ìš”ì²­í•˜ê³  ì „ì†¡ì„ ë°›ìœ¼ë©´ responseHandlerë¥¼ í˜¸ì¶œ.//responseHandlerëŠ” loginProcessing ë©”ì„œë“œì— ë“±ë¡ë˜ì–´ìˆìŒ.
                 http.execute(httpPost, responseHandler);
-                //Àü°øÀÌ ³¡³ª¸é responseHanler°¡ È£ÃâµÇ°í ±×¾È¿¡¼­ ¹ŞÀº µ¥ÀÌÅÍ¿¡ ´ëÇÑ ÆÄ½ÌÀÌ ÁøÇàµÈ´Ù.
+                //ì „ê³µì´ ëë‚˜ë©´ responseHanlerê°€ í˜¸ì¶œë˜ê³  ê·¸ì•ˆì—ì„œ ë°›ì€ ë°ì´í„°ì— ëŒ€í•œ íŒŒì‹±ì´ ì§„í–‰ëœë‹¤.
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -101,53 +95,53 @@ public class Sign_up_in {
     }
 
 
-    //¸Ş½ÃÁö¸¦ ¹Ş¾Æ¼­ RESULT Å°ÀÇ °ªÀ» È®ÀÎÇØ¼­ UI¸¦ °»½ÅÇÏ´Â ÇÚµé·¯    //loginProcess¿¡ ¸Ş¼¼Áö¸¦ ¿©±â handler¿¡°Ô º¸³»´Â ¸Ş¼­µå°¡ ÀÖ´Ù. ¡Ú¡Ú(¹Ø¿¡º¸¸éµÈ´Ù ¾Æº¹ÀâÇØ)
+    //ë©”ì‹œì§€ë¥¼ ë°›ì•„ì„œ RESULT í‚¤ì˜ ê°’ì„ í™•ì¸í•´ì„œ UIë¥¼ ê°±ì‹ í•˜ëŠ” í•¸ë“¤ëŸ¬    //loginProcessì— ë©”ì„¸ì§€ë¥¼ ì—¬ê¸° handlerì—ê²Œ ë³´ë‚´ëŠ” ë©”ì„œë“œê°€ ìˆë‹¤. â˜…â˜…(ë°‘ì—ë³´ë©´ëœë‹¤ ì•„ë³µì¡í•´)
     private final Handler handler = new Handler() {
         @Override
-        //¸Ş½ÃÁö¸¦ ¹ŞÀ¸¸é(Handler°´Ã¼ÀÇ sendMessage()³ª
-        //sendEmptyMessage() È£Ãâ)È£Ãâ µÇ´Â ¸Ş¼­µå.
+        //ë©”ì‹œì§€ë¥¼ ë°›ìœ¼ë©´(Handlerê°ì²´ì˜ sendMessage()ë‚˜
+        //sendEmptyMessage() í˜¸ì¶œ)í˜¸ì¶œ ë˜ëŠ” ë©”ì„œë“œ.
         public void handleMessage(Message msg) {
-            //È­¸é¿¡¼­ ´ëÈ­»óÀÚ Á¦°Å
+            //í™”ë©´ì—ì„œ ëŒ€í™”ìƒì ì œê±°
 
-            //Result Å°ÀÇ µ¥ÀÌÅÍ¸¦ ¹®ÀÚ¿­·Î º¯È¯
+            //Result í‚¤ì˜ ë°ì´í„°ë¥¼ ë¬¸ìì—´ë¡œ ë³€í™˜
             String result = msg.getData().getString("RESULT");
 
-            //resultÀÇ °ªÀÌ ·Î±×ÀÎ¿¡ ¼º°øÇÏ¸é ¹è°æ»öÀ» º¯°æÇÏ°í Åä½ºÆ®¸¦ Ãâ·Â
-            if (result.equals("·Î±×ÀÎ¼º°ø")) {
-            	System.out.println("·Î±×ÀÎ ¼º°ø");
-            	Intent intent = new Intent(context,Tabview.class);
-            	context.startActivity(intent);
+            //resultì˜ ê°’ì´ ë¡œê·¸ì¸ì— ì„±ê³µí•˜ë©´ ë°°ê²½ìƒ‰ì„ ë³€ê²½í•˜ê³  í† ìŠ¤íŠ¸ë¥¼ ì¶œë ¥
+            if (result.equals("ë¡œê·¸ì¸ì„±ê³µ")) {
+                System.out.println("ë¡œê·¸ì¸ ì„±ê³µ");
+                Intent intent = new Intent(context,Tabview.class);
+                context.startActivity(intent);
             }
-            else if(result.equals("»ğÀÔ¼º°ø")){
-            	Log.d("InsertAction", "»ğÀÔ ¼º°ø!!");
+            else if(result.equals("ì‚½ì…ì„±ê³µ")){
+                Log.d("InsertAction", "ì‚½ì… ì„±ê³µ!!");
             }
-            else if(result.equals("»èÁ¦¼º°ø")){
-            	System.out.println("»èÁ¦ ¼º°ø");
-            	Intent intent = new Intent(context,MainActivity.class);
-            	context.startActivity(intent);
+            else if(result.equals("ì‚­ì œì„±ê³µ")){
+                System.out.println("ì‚­ì œ ì„±ê³µ");
+                Intent intent = new Intent(context,MainActivity.class);
+                context.startActivity(intent);
             }
             else {
-            	Log.d("·Î±×ÀÎ °úÁ¤ ½ÇÆĞ ", result);
+                Log.d("ë¡œê·¸ì¸ ê³¼ì • ì‹¤íŒ¨ ", result);
             }
         }
 
     };
 
 
-    //InputStreamÀ» ¸Å°³º¯¼ö·Î ¹Ş¾Æ¼­ µ¥ÀÌÅÍ¸¦ ÁÙ´ÜÀ§·Î ÀüºÎ ÀĞÀº ÈÄ
-    //±× µ¥ÀÌÅÍ¸¦ ÆÄ½ÌÇÏ°í ÆÄ½ÌÇÑ °á°ú¸¦ ¸®ÅÏÇÏ´Â ¸Ş¼­µå
-    //result¶ó´Â Å°ÀÇ ¹®ÀÚ¿­À» ÀĞ¾î³»¼­ ¸®ÅÏ
+    //InputStreamì„ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ì„œ ë°ì´í„°ë¥¼ ì¤„ë‹¨ìœ„ë¡œ ì „ë¶€ ì½ì€ í›„
+    //ê·¸ ë°ì´í„°ë¥¼ íŒŒì‹±í•˜ê³  íŒŒì‹±í•œ ê²°ê³¼ë¥¼ ë¦¬í„´í•˜ëŠ” ë©”ì„œë“œ
+    //resultë¼ëŠ” í‚¤ì˜ ë¬¸ìì—´ì„ ì½ì–´ë‚´ì„œ ë¦¬í„´
     private String parsingData(InputStream input) {
-        //°á°ú¸¦ ¸®ÅÏÇÒ º¯¼ö
-        System.out.println("parsingData ¸Ş¼­µå ½ÃÀÛ");
+        //ê²°ê³¼ë¥¼ ë¦¬í„´í•  ë³€ìˆ˜
+        System.out.println("parsingData ë©”ì„œë“œ ì‹œì‘");
         String result = null;
-        //µ¥ÀÌÅÍ¸¦ ¹Ş¾Æ¿À´Â µ¿¾È »ç¿ëÇÒ ÀÓ½Ã º¯¼ö
+        //ë°ì´í„°ë¥¼ ë°›ì•„ì˜¤ëŠ” ë™ì•ˆ ì‚¬ìš©í•  ì„ì‹œ ë³€ìˆ˜
         StringBuilder sBuffer = new StringBuilder();
 
-        //InputStream °´Ã¼¸¦ °¡Áö°í ¹®ÀÚ´ÜÀ§·Î ÀĞÀ» ¼ö ÀÖ´Â InputStreamReader »ı¼º
+        //InputStream ê°ì²´ë¥¼ ê°€ì§€ê³  ë¬¸ìë‹¨ìœ„ë¡œ ì½ì„ ìˆ˜ ìˆëŠ” InputStreamReader ìƒì„±
         InputStreamReader isr = new InputStreamReader(input);
 
-        //À§ÀÇ °´Ã¼¸¦ °¡Áö°í ÁÙ´ÜÀ§·Î ¹®ÀÚ¸¦ ÀĞ¾î ³¾ ¼ö ÀÖ´Â BufferedReader »ı¼º
+        //ìœ„ì˜ ê°ì²´ë¥¼ ê°€ì§€ê³  ì¤„ë‹¨ìœ„ë¡œ ë¬¸ìë¥¼ ì½ì–´ ë‚¼ ìˆ˜ ìˆëŠ” BufferedReader ìƒì„±
         BufferedReader br = new BufferedReader(isr);
 
 
@@ -162,27 +156,27 @@ public class Sign_up_in {
         } catch (Exception e) {
         }
 
-        //ÀúÀåÇÑ µ¥ÀÌÅÍ¸¦ ¹®ÀÚ¿­·Î º¯È¯
+        //ì €ì¥í•œ ë°ì´í„°ë¥¼ ë¬¸ìì—´ë¡œ ë³€í™˜
         String xml = sBuffer.toString();
 
 
-        //xml ¹®ÀÚ¿­ xml ÆÄ½Ì
+        //xml ë¬¸ìì—´ xml íŒŒì‹±
         try {
             if (xml != null) {
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-                //¹®ÀÚ¿­À» InputStreamÀ¸·Î º¯È¯
+                //ë¬¸ìì—´ì„ InputStreamìœ¼ë¡œ ë³€í™˜
                 InputStream is = new ByteArrayInputStream(xml.getBytes());
-                //InputStreamÀÇ ³»¿ëÀ» xml¹®¼­·Î º¯È¯
+                //InputStreamì˜ ë‚´ìš©ì„ xmlë¬¸ì„œë¡œ ë³€í™˜
                 Document doc = documentBuilder.parse(is);
 
-                //·çÆ® ÅÂ±× Ã£¾Æ¿À±â
+                //ë£¨íŠ¸ íƒœê·¸ ì°¾ì•„ì˜¤ê¸°
                 Element element = doc.getDocumentElement();
 
-                //result ÅÂ±×ÀÇ µ¥ÀÌÅÍ °¡Á®¿À±â
+                //result íƒœê·¸ì˜ ë°ì´í„° ê°€ì ¸ì˜¤ê¸°
                 NodeList items = element.getElementsByTagName("result");
 
-                //resultÅÂ±×ÀÇ Ã¹¹øÂ° °ª Ã£¾Æ¿À±â
+                //resultíƒœê·¸ì˜ ì²«ë²ˆì§¸ ê°’ ì°¾ì•„ì˜¤ê¸°
                 result = items.item(0).getFirstChild().getNodeValue();
             }
         } catch (Exception e) {
@@ -192,121 +186,121 @@ public class Sign_up_in {
     }
 
 
-    //¹öÆ°ÀÇ ÀÌº¥Æ® Ã³¸®¿¡¼­ È£ÃâÇÏ´Â ¸Ş¼­µå
+    //ë²„íŠ¼ì˜ ì´ë²¤íŠ¸ ì²˜ë¦¬ì—ì„œ í˜¸ì¶œí•˜ëŠ” ë©”ì„œë“œ
     public void loginProcess() {
-        //µ¥ÀÌÅÍ¸¦ ÀüºÎ ´Ù¿î·Îµå ¹Ş°í ³ª¸é È£ÃâµÇ´Â ÇÚµé·¯ »ı¼º
-        responseHandler = new ResponseHandler<String>() {   //ÀÏÁ¾ÀÇ ÇÚµé·¯ µî·ÏÀÎ°¡...??
+        //ë°ì´í„°ë¥¼ ì „ë¶€ ë‹¤ìš´ë¡œë“œ ë°›ê³  ë‚˜ë©´ í˜¸ì¶œë˜ëŠ” í•¸ë“¤ëŸ¬ ìƒì„±
+        responseHandler = new ResponseHandler<String>() {   //ì¼ì¢…ì˜ í•¸ë“¤ëŸ¬ ë“±ë¡ì¸ê°€...??
 
             @Override
-            //µ¥ÀÌÅÍ¸¦ ´Ù¿î·Îµå ¹Ş°í ³ª¸é È£ÃâµÇ´Â ¸Ş¼­µå. ¡Ú µ¥ÀÌÅÍ¸¦ ´Ù¿î¹Ş°í³ª¼­ ÆÄ½ÌÀ» ½Ç½ÃÇÑ´Ù.
+            //ë°ì´í„°ë¥¼ ë‹¤ìš´ë¡œë“œ ë°›ê³  ë‚˜ë©´ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ. â˜… ë°ì´í„°ë¥¼ ë‹¤ìš´ë°›ê³ ë‚˜ì„œ íŒŒì‹±ì„ ì‹¤ì‹œí•œë‹¤.
             public String handleResponse(HttpResponse arg0)
                     throws ClientProtocolException, IOException {
 
-                //parsingData ¸Ş¼­µåÀÇ °á°ú¸¦ ÀúÀåÇÒ º¯¼ö
+                //parsingData ë©”ì„œë“œì˜ ê²°ê³¼ë¥¼ ì €ì¥í•  ë³€ìˆ˜
                 String result = null;
-                //¹Ş¾Æ¿Â µ¥ÀÌÅÍÀÇ InputStreamÀ» »ı¼ºÇÏ±â À§ÇÑ °´Ã¼
+                //ë°›ì•„ì˜¨ ë°ì´í„°ì˜ InputStreamì„ ìƒì„±í•˜ê¸° ìœ„í•œ ê°ì²´
                 HttpEntity entity = arg0.getEntity();
 
-                //parsingData¸¦ È£ÃâÇÏ°í °á°ú¸¦ result¿¡ ÀúÀå
+                //parsingDataë¥¼ í˜¸ì¶œí•˜ê³  ê²°ê³¼ë¥¼ resultì— ì €ì¥
                 result = parsingData(entity.getContent());
 
                 System.out.println(result);
 
-                //ÀÏ¹İ ÇÚµé·¯¿¡°Ô ¸Ş½ÃÁö¸¦ Àü¼ÛÇÏ±â À§ÇØ¼­ ¸Ş½ÃÁö °´Ã¼ »ı¼º
+                //ì¼ë°˜ í•¸ë“¤ëŸ¬ì—ê²Œ ë©”ì‹œì§€ë¥¼ ì „ì†¡í•˜ê¸° ìœ„í•´ì„œ ë©”ì‹œì§€ ê°ì²´ ìƒì„±
                 Message message = handler.obtainMessage();
                 Bundle bundle = new Bundle();
                 if (result.equals("1")) {
-                    bundle.putString("RESULT", "·Î±×ÀÎ¼º°ø");
+                    bundle.putString("RESULT", "ë¡œê·¸ì¸ì„±ê³µ");
                 } else {
-                    bundle.putString("RESULT", "·Î±×ÀÎ½ÇÆĞ");
+                    bundle.putString("RESULT", "ë¡œê·¸ì¸ì‹¤íŒ¨");
                 }
                 message.setData(bundle);
-                //ÇÚµé·¯¿¡°Ô ¸Ş½ÃÁö¸¦ Àü¼ÛÇÔ.
+                //í•¸ë“¤ëŸ¬ì—ê²Œ ë©”ì‹œì§€ë¥¼ ì „ì†¡í•¨.
                 handler.sendMessage(message);
                 return result;
             }
         };
-        //´ÙÀÌ¾ó·Î±× »ı¼ºÇØ¼­ Ãâ·Â
+        //ë‹¤ì´ì–¼ë¡œê·¸ ìƒì„±í•´ì„œ ì¶œë ¥
 
-        //½º·¹µå¸¦ »ı¼ºÇØ¼­ ½ÃÀÛ
+        //ìŠ¤ë ˆë“œë¥¼ ìƒì„±í•´ì„œ ì‹œì‘
         th = new ThreadEx(1);
         th.start();
     }
 
     public void insertProcess() {
-        //µ¥ÀÌÅÍ¸¦ ÀüºÎ ´Ù¿î·Îµå ¹Ş°í ³ª¸é È£ÃâµÇ´Â ÇÚµé·¯ »ı¼º
+        //ë°ì´í„°ë¥¼ ì „ë¶€ ë‹¤ìš´ë¡œë“œ ë°›ê³  ë‚˜ë©´ í˜¸ì¶œë˜ëŠ” í•¸ë“¤ëŸ¬ ìƒì„±
         responseHandler = new ResponseHandler<String>() {
             @Override
-            //µ¥ÀÌÅÍ¸¦ ´Ù¿î·Îµå ¹Ş°í ³ª¸é È£ÃâµÇ´Â ¸Ş¼­µå. ¡Ú µ¥ÀÌÅÍ¸¦ ´Ù¿î¹Ş°í³ª¼­ ÆÄ½ÌÀ» ½Ç½ÃÇÑ´Ù.
+            //ë°ì´í„°ë¥¼ ë‹¤ìš´ë¡œë“œ ë°›ê³  ë‚˜ë©´ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ. â˜… ë°ì´í„°ë¥¼ ë‹¤ìš´ë°›ê³ ë‚˜ì„œ íŒŒì‹±ì„ ì‹¤ì‹œí•œë‹¤.
             public String handleResponse(HttpResponse arg0)
                     throws ClientProtocolException, IOException {
 
-                //parsingData ¸Ş¼­µåÀÇ °á°ú¸¦ ÀúÀåÇÒ º¯¼ö
+                //parsingData ë©”ì„œë“œì˜ ê²°ê³¼ë¥¼ ì €ì¥í•  ë³€ìˆ˜
                 String result = null;
-                //¹Ş¾Æ¿Â µ¥ÀÌÅÍÀÇ InputStreamÀ» »ı¼ºÇÏ±â À§ÇÑ °´Ã¼
+                //ë°›ì•„ì˜¨ ë°ì´í„°ì˜ InputStreamì„ ìƒì„±í•˜ê¸° ìœ„í•œ ê°ì²´
                 HttpEntity entity = arg0.getEntity();
 
-                //parsingData¸¦ È£ÃâÇÏ°í °á°ú¸¦ result¿¡ ÀúÀå
+                //parsingDataë¥¼ í˜¸ì¶œí•˜ê³  ê²°ê³¼ë¥¼ resultì— ì €ì¥
                 result = parsingData(entity.getContent());    //
 
                 System.out.println(result);
 
-                //ÀÏ¹İ ÇÚµé·¯¿¡°Ô ¸Ş½ÃÁö¸¦ Àü¼ÛÇÏ±â À§ÇØ¼­ ¸Ş½ÃÁö °´Ã¼ »ı¼º
+                //ì¼ë°˜ í•¸ë“¤ëŸ¬ì—ê²Œ ë©”ì‹œì§€ë¥¼ ì „ì†¡í•˜ê¸° ìœ„í•´ì„œ ë©”ì‹œì§€ ê°ì²´ ìƒì„±
                 Message message = handler.obtainMessage();
                 Bundle bundle = new Bundle();
                 if (result.equals("1")) {
-                    bundle.putString("RESULT", "»ğÀÔ¼º°ø");
+                    bundle.putString("RESULT", "ì‚½ì…ì„±ê³µ");
                 } else {
-                    bundle.putString("RESULT", "»ğÀÔ½ÇÆĞ");
+                    bundle.putString("RESULT", "ì‚½ì…ì‹¤íŒ¨");
                 }
                 message.setData(bundle);
-                //ÇÚµé·¯¿¡°Ô ¸Ş½ÃÁö¸¦ Àü¼ÛÇÔ.
+                //í•¸ë“¤ëŸ¬ì—ê²Œ ë©”ì‹œì§€ë¥¼ ì „ì†¡í•¨.
                 handler.sendMessage(message);
                 return result;
             }
         };
-        //´ÙÀÌ¾ó·Î±× »ı¼ºÇØ¼­ Ãâ·Â
+        //ë‹¤ì´ì–¼ë¡œê·¸ ìƒì„±í•´ì„œ ì¶œë ¥
 
-        //½º·¹µå¸¦ »ı¼ºÇØ¼­ ½ÃÀÛ
+        //ìŠ¤ë ˆë“œë¥¼ ìƒì„±í•´ì„œ ì‹œì‘
         th = new ThreadEx(2);
         th.start();
     }
 
     public void deleteProcess() {
-        //µ¥ÀÌÅÍ¸¦ ÀüºÎ ´Ù¿î·Îµå ¹Ş°í ³ª¸é È£ÃâµÇ´Â ÇÚµé·¯ »ı¼º
+        //ë°ì´í„°ë¥¼ ì „ë¶€ ë‹¤ìš´ë¡œë“œ ë°›ê³  ë‚˜ë©´ í˜¸ì¶œë˜ëŠ” í•¸ë“¤ëŸ¬ ìƒì„±
         responseHandler = new ResponseHandler<String>() {
             @Override
-            //µ¥ÀÌÅÍ¸¦ ´Ù¿î·Îµå ¹Ş°í ³ª¸é È£ÃâµÇ´Â ¸Ş¼­µå. ¡Ú µ¥ÀÌÅÍ¸¦ ´Ù¿î¹Ş°í³ª¼­ ÆÄ½ÌÀ» ½Ç½ÃÇÑ´Ù.
+            //ë°ì´í„°ë¥¼ ë‹¤ìš´ë¡œë“œ ë°›ê³  ë‚˜ë©´ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ. â˜… ë°ì´í„°ë¥¼ ë‹¤ìš´ë°›ê³ ë‚˜ì„œ íŒŒì‹±ì„ ì‹¤ì‹œí•œë‹¤.
             public String handleResponse(HttpResponse arg0)
                     throws ClientProtocolException, IOException {
 
-                //parsingData ¸Ş¼­µåÀÇ °á°ú¸¦ ÀúÀåÇÒ º¯¼ö
+                //parsingData ë©”ì„œë“œì˜ ê²°ê³¼ë¥¼ ì €ì¥í•  ë³€ìˆ˜
                 String result = null;
-                //¹Ş¾Æ¿Â µ¥ÀÌÅÍÀÇ InputStreamÀ» »ı¼ºÇÏ±â À§ÇÑ °´Ã¼
+                //ë°›ì•„ì˜¨ ë°ì´í„°ì˜ InputStreamì„ ìƒì„±í•˜ê¸° ìœ„í•œ ê°ì²´
                 HttpEntity entity = arg0.getEntity();
 
-                //parsingData¸¦ È£ÃâÇÏ°í °á°ú¸¦ result¿¡ ÀúÀå
+                //parsingDataë¥¼ í˜¸ì¶œí•˜ê³  ê²°ê³¼ë¥¼ resultì— ì €ì¥
                 result = parsingData(entity.getContent());    //
 
                 System.out.println(result);
 
-                //ÀÏ¹İ ÇÚµé·¯¿¡°Ô ¸Ş½ÃÁö¸¦ Àü¼ÛÇÏ±â À§ÇØ¼­ ¸Ş½ÃÁö °´Ã¼ »ı¼º
+                //ì¼ë°˜ í•¸ë“¤ëŸ¬ì—ê²Œ ë©”ì‹œì§€ë¥¼ ì „ì†¡í•˜ê¸° ìœ„í•´ì„œ ë©”ì‹œì§€ ê°ì²´ ìƒì„±
                 Message message = handler.obtainMessage();
                 Bundle bundle = new Bundle();
                 if (result.equals("1")) {
-                    bundle.putString("RESULT", "»èÁ¦¼º°ø");
+                    bundle.putString("RESULT", "ì‚­ì œì„±ê³µ");
                 } else {
-                    bundle.putString("RESULT", "»èÁ¦½ÇÆĞ");
+                    bundle.putString("RESULT", "ì‚­ì œì‹¤íŒ¨");
                 }
                 message.setData(bundle);
-                //ÇÚµé·¯¿¡°Ô ¸Ş½ÃÁö¸¦ Àü¼ÛÇÔ.
+                //í•¸ë“¤ëŸ¬ì—ê²Œ ë©”ì‹œì§€ë¥¼ ì „ì†¡í•¨.
                 handler.sendMessage(message);
                 return result;
             }
         };
-        //´ÙÀÌ¾ó·Î±× »ı¼ºÇØ¼­ Ãâ·Â
+        //ë‹¤ì´ì–¼ë¡œê·¸ ìƒì„±í•´ì„œ ì¶œë ¥
 
-        //½º·¹µå¸¦ »ı¼ºÇØ¼­ ½ÃÀÛ
+        //ìŠ¤ë ˆë“œë¥¼ ìƒì„±í•´ì„œ ì‹œì‘
         th = new ThreadEx(3);
         th.start();
     }

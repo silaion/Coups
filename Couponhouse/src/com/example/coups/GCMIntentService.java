@@ -4,13 +4,6 @@ package com.example.coups;
  * Created by DaeSeung on 2014-09-21.
  */
 
-import java.util.HashMap;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.util.EntityUtils;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,11 +15,16 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
 import com.google.android.gcm.GCMBaseIntentService;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.util.EntityUtils;
+
+import java.util.HashMap;
 
 public class GCMIntentService extends GCMBaseIntentService {
-//    //·¹Áö½ºÆ®·¹ÀÌ¼Ç id¸¦ È®ÀÎÇÏ´Â ÄÚµå¿´À½
+    //    //ë ˆì§€ìŠ¤íŠ¸ë ˆì´ì…˜ idë¥¼ í™•ì¸í•˜ëŠ” ì½”ë“œì˜€ìŒ
 //    private static void generateNotification(Context context, String message) {
 //
 //        int icon = R.drawable.ic_launcher;
@@ -76,7 +74,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 //    @Override
 //
 //    protected void onRegistered(Context context, String reg_id) {
-//        Log.e("Å°¸¦ µî·ÏÇÕ´Ï´Ù.(GCM INTENTSERVICE)", reg_id);
+//        Log.e("í‚¤ë¥¼ ë“±ë¡í•©ë‹ˆë‹¤.(GCM INTENTSERVICE)", reg_id);
 //    }
 //
 //
@@ -84,31 +82,36 @@ public class GCMIntentService extends GCMBaseIntentService {
 //    @Override
 //
 //    protected void onUnregistered(Context arg0, String arg1) {
-//        Log.e("Å°¸¦ Á¦°ÅÇÕ´Ï´Ù.(GCM INTENTSERVICE)","Á¦°ÅµÇ¾ú½À´Ï´Ù.");
+//        Log.e("í‚¤ë¥¼ ì œê±°í•©ë‹ˆë‹¤.(GCM INTENTSERVICE)","ì œê±°ë˜ì—ˆìŠµë‹ˆë‹¤.");
 //    }
-//¿©±â±îÁö
+//ì—¬ê¸°ê¹Œì§€
     static String gcm_msg = null;
     public ServerRequest serverRequest_insert = null;
     NotificationManager nm;
     Notification mNoti;
     static PendingIntent pIntent;
 
-    // GCM¿¡ Á¤»óÀûÀ¸·Î µî·ÏµÇ¾úÀ»°æ¿ì ¹ß»ıÇÏ´Â ¸Ş¼Òµå
+    // GCMì— ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆì„ê²½ìš° ë°œìƒí•˜ëŠ” ë©”ì†Œë“œ
     @Override
     protected void onRegistered(Context arg0, String arg1) {
         // TODO Auto-generated method stub
-        Log.d("test", "µî·ÏID:" + arg1);
+        Log.d("test", "ë“±ë¡ID:" + arg1);
 
         HashMap<Object, Object> param = new HashMap<Object, Object>();
         param.put("regid", arg1);
+        param.put("name", "ì¥ëŒ€ìŠ¹");
+        param.put("gender", "1");
+        param.put("birth", "19910130");
+        param.put("phoneNum", "01088924959");
         //serverRequest_insert = new ServerRequest("http://112.172.217.74:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler);
-        serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler);
+        //serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler);
+        serverRequest_insert = new ServerRequest("http://192.168.0.16:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler);
         serverRequest_insert.start();
     }
 
 
     /**
-     * ¿äÃ»ÈÄ ÇÚµé·¯¿¡ÀÇÇØ ¸®½ºÆ®ºä ±¸¼º
+     * ìš”ì²­í›„ í•¸ë“¤ëŸ¬ì—ì˜í•´ ë¦¬ìŠ¤íŠ¸ë·° êµ¬ì„±
      */
     private Handler mHandler = new Handler() {
 
@@ -117,20 +120,20 @@ public class GCMIntentService extends GCMBaseIntentService {
             String result = msg.getData().getString("result");
 
             if (result.equals("success")) {
-//                Toast.makeText(ThirdActivity.mContext,"µ¥ÀÌÅÍº£ÀÌ½º¿¡ regid°¡ µî·ÏµÇ¾ú½À´Ï´Ù.", Toast.LENGTH_LONG).show();
-//                Toast.makeText(FirstActivity.mContext,"µ¥ÀÌÅÍº£ÀÌ½º¿¡ regid°¡ µî·ÏµÇ¾ú½À´Ï´Ù.", Toast.LENGTH_LONG).show();
-            	Log.d("regid", "µ¥ÀÌÅÍº£ÀÌ½º¿¡ regid°¡ µî·ÏµÇ¾ú½À´Ï´Ù.");
+//                Toast.makeText(ThirdActivity.mContext,"ë°ì´í„°ë² ì´ìŠ¤ì— regidê°€ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(FirstActivity.mContext,"ë°ì´í„°ë² ì´ìŠ¤ì— regidê°€ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.", Toast.LENGTH_LONG).show();
+                Log.d("regid", "ë°ì´í„°ë² ì´ìŠ¤ì— regidê°€ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
             } else {
-//            	Toast.makeText(ThirdActivity.mContext,"µ¥ÀÌÅÍº£ÀÌ½º¿¡ regid°¡ µî·ÏµÇÁö ¾Ê¾Ò½À´Ï´Ù.", Toast.LENGTH_LONG).show();
-//                Toast.makeText(FirstActivity.mContext,"µ¥ÀÌÅÍº£ÀÌ½º¿¡ regid°¡ µî·ÏµÇÁö ¾Ê¾Ò½À´Ï´Ù.", Toast.LENGTH_LONG).show();
-            	Log.d("regid", "µ¥ÀÌÅÍº£ÀÌ½º¿¡ regid°¡ µî·ÏµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+//            	Toast.makeText(ThirdActivity.mContext,"ë°ì´í„°ë² ì´ìŠ¤ì— regidê°€ ë“±ë¡ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(FirstActivity.mContext,"ë°ì´í„°ë² ì´ìŠ¤ì— regidê°€ ë“±ë¡ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.", Toast.LENGTH_LONG).show();
+                Log.d("regid", "ë°ì´í„°ë² ì´ìŠ¤ì— regidê°€ ë“±ë¡ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             }
         }
     };
 
 
     /**
-     * ¿äÃ»ÈÄ response¿¡ ´ëÇÑ ÆÄ½ÌÃ³¸®
+     * ìš”ì²­í›„ responseì— ëŒ€í•œ íŒŒì‹±ì²˜ë¦¬
      */
     private ResponseHandler<String> mResHandler = new ResponseHandler<String>() {
 
@@ -145,7 +148,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             } else {
                 bundle.putString("result", "fail");
             }
-            
+
             String msg = message.getData().getString("result");
             message.setData(bundle);
             mHandler.sendMessage(message);
@@ -154,61 +157,61 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     };
 
-    // GCM¿¡ ÇØÁöÇÏ¿´À»°æ¿ì ¹ß»ıÇÏ´Â ¸Ş¼Òµå
+    // GCMì— í•´ì§€í•˜ì˜€ì„ê²½ìš° ë°œìƒí•˜ëŠ” ë©”ì†Œë“œ
     @Override
     protected void onUnregistered(Context arg0, String arg1) {
-        Log.d("test", "ÇØÁöID:" + arg1);
+        Log.d("test", "í•´ì§€ID:" + arg1);
     }
 
-    // GCMÀÌ ¸Ş½ÃÁö¸¦ º¸³»¿ÔÀ»¶§ ¹ß»ıÇÏ´Â ¸Ş¼Òµå
+    // GCMì´ ë©”ì‹œì§€ë¥¼ ë³´ë‚´ì™”ì„ë•Œ ë°œìƒí•˜ëŠ” ë©”ì†Œë“œ
     @Override
     protected void onMessage(Context arg0, Intent arg1) {
         // TODO Auto-generated method stub
-    	gcm_msg = arg1.getExtras().getString("test");
-    	
-    	try {
-    		Vibrator vibrator = 
-    		 (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
-    		vibrator.vibrate(1000);
-    		setNotification(arg0, gcm_msg);
-    	} catch (Exception e) {
-    		Log.e("GCM_onMessage", "failed");
-    	}
-    	
-        Log.d("test", "¸Ş½ÃÁö°¡ ¿Ô½À´Ï´Ù : " + gcm_msg);
+        gcm_msg = arg1.getExtras().getString("test");
+
+        try {
+            Vibrator vibrator =
+                    (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator.vibrate(1000);
+            setNotification(arg0, gcm_msg);
+        } catch (Exception e) {
+            Log.e("GCM_onMessage", "failed");
+        }
+
+        Log.d("test", "ë©”ì‹œì§€ê°€ ì™”ìŠµë‹ˆë‹¤ : " + gcm_msg);
         showMessage();
     }
-    
+
     private void setNotification(Context context, String message){
-    	NotificationManager nm;
-    	Notification mNoti;
-    	try{
-    		nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-    		PendingIntent pIntent = PendingIntent.getActivity(context, 0, new Intent(context, TabOneActivity.class), 0);
-    		mNoti = new NotificationCompat.Builder(getApplicationContext())
-			.setContentTitle(gcm_msg)
-			.setAutoCancel(true)
-			.setContentIntent(pIntent)
-			.build();
-    		nm.notify(0, mNoti);
-    	}catch(Exception e){
-    		e.printStackTrace();
-    		Log.d("GCM_setNotification", "failed");
-    	}
+        NotificationManager nm;
+        Notification mNoti;
+        try{
+            nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            PendingIntent pIntent = PendingIntent.getActivity(context, 0, new Intent(context, TabOneActivity.class), 0);
+            mNoti = new NotificationCompat.Builder(getApplicationContext())
+                    .setContentTitle(gcm_msg)
+                    .setAutoCancel(true)
+                    .setContentIntent(pIntent)
+                    .build();
+            nm.notify(0, mNoti);
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.d("GCM_setNotification", "failed");
+        }
     }
 
 
-    // ¿À·ù¸¦ ÇÚµé¸µÇÏ´Â ¸Ş¼Òµå
+    // ì˜¤ë¥˜ë¥¼ í•¸ë“¤ë§í•˜ëŠ” ë©”ì†Œë“œ
     @Override
     protected void onError(Context arg0, String arg1) {
         Log.d("test", arg1);
     }
 
 
-    // ¼­ºñ½º »ı¼ºÀÚ
+    // ì„œë¹„ìŠ¤ ìƒì„±ì
     public GCMIntentService() {
         //super(MainActivity.PROJECT_ID);
-        Log.d("test", "GCM¼­ºñ½º »ı¼ºÀÚ ½ÇÇà");
+        Log.d("test", "GCMì„œë¹„ìŠ¤ ìƒì„±ì ì‹¤í–‰");
     }
 
     public void showMessage() {
@@ -222,9 +225,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-//            Toast.makeText(FirstActivity.mContext, "¼ö½Å ¸Ş½ÃÁö : " + gcm_msg, Toast.LENGTH_LONG).show();
-//            Toast.makeText(ThirdActivity.mContext, "¼ö½Å ¸Ş½ÃÁö : " + gcm_msg, Toast.LENGTH_LONG).show();
-        	Log.d("GCM_handler", "¼ö½Å ¸Ş½ÃÁö : " + gcm_msg);
+//            Toast.makeText(FirstActivity.mContext, "ìˆ˜ì‹  ë©”ì‹œì§€ : " + gcm_msg, Toast.LENGTH_LONG).show();
+//            Toast.makeText(ThirdActivity.mContext, "ìˆ˜ì‹  ë©”ì‹œì§€ : " + gcm_msg, Toast.LENGTH_LONG).show();
+            Log.d("GCM_handler", "ìˆ˜ì‹  ë©”ì‹œì§€ : " + gcm_msg);
         }
     };
 }

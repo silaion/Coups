@@ -13,76 +13,76 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	Button user;
-	Button signin;
-	
-	Sign_up_in sign;
-	
-	static String name, phoneNum, birth, gender = "1";
+    Button user;
+    Button signin;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		user = (Button)findViewById(R.id.user);
-		user.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(MainActivity.this, FirstActivity.class);
-				startActivity(intent);
-			}
-		});
-		
-		signin = (Button)findViewById(R.id.signin);
-		signin.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(MainActivity.this, ThirdActivity.class);
-				startActivity(intent);
-			}
-		});
-		
-		getPreferences();
-		Log.d("pref", name + " " + gender + " " + birth + " " + phoneNum);
+    Sign_up_in sign;
+
+    static String name, phoneNum, birth, gender = "1";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        user = (Button)findViewById(R.id.user);
+        user.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent(MainActivity.this, FirstActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        signin = (Button)findViewById(R.id.signin);
+        signin.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent(MainActivity.this, ThirdActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        getPreferences();
+        Log.d("pref", name + " " + gender + " " + birth + " " + phoneNum);
 //		sign = new Sign_up_in(this, name, gender, phoneNum, birth);
 //		sign.loginProcess();
-		
-	}
-	
-	private void getPreferences(){
-		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-		name = pref.getString("Name", "");
-		gender = pref.getString("Gender", "");
-		phoneNum = pref.getString("PhoneNumber", "");
-		birth = pref.getString("Birthday", "");
-		
-	}
-	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-       switch(keyCode) {
-         case KeyEvent.KEYCODE_BACK:
-        	 Toast.makeText(this, "µ⁄∑Œ∞°±‚πˆ∆∞ ¥≠∏≤", Toast.LENGTH_SHORT).show();
-           new AlertDialog.Builder(this)
-           .setTitle("«¡∑Œ±◊∑• ¡æ∑·")
-           .setMessage("«¡∑Œ±◊∑•¿ª ¡æ∑· «œΩ√∞⁄Ω¿¥œ±Ó?")
-           .setPositiveButton("øπ", new DialogInterface.OnClickListener() {
-        	   @Override
-        	   public void onClick(DialogInterface dialog, int whichButton) {
-                             finish();
-                           }
-                         })
-                         .setNegativeButton("æ∆¥œø¿", null)
-                         .show();
-                         break;
-         default:
-           break;
-      }
-       return super.onKeyDown(keyCode, event);
-	}
+
+    }
+
+    private void getPreferences(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        name = pref.getString("Name", "");
+        gender = pref.getString("Gender", "");
+        phoneNum = pref.getString("PhoneNumber", "");
+        birth = pref.getString("Birthday", "");
+
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                Toast.makeText(this, "Îí§Î°úÍ∞ÄÍ∏∞Î≤ÑÌäº ÎàåÎ¶º", Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(this)
+                        .setTitle("ÌîÑÎ°úÍ∑∏Îû® Ï¢ÖÎ£å")
+                        .setMessage("ÌîÑÎ°úÍ∑∏Îû®ÏùÑ Ï¢ÖÎ£å ÌïòÏãúÍ≤†ÏäµÎãàÍπå?")
+                        .setPositiveButton("Ïòà", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("ÏïÑÎãàÏò§", null)
+                        .show();
+                break;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

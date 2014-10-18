@@ -15,27 +15,27 @@ public class Kakaolink {
     private Context ct;
 
     public Kakaolink(Context c){
-       ct = c;
+        ct = c;
     }
     public void sendKakaoTalkLink() {
         try {
-                kakaoLink = KakaoLink.getKakaoLink(ct);
-                //kakaoLink = KakaoLink.getKakaoLink(getApplicationContext());
-                kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
+            kakaoLink = KakaoLink.getKakaoLink(ct);
+            //kakaoLink = KakaoLink.getKakaoLink(getApplicationContext());
+            kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
 
-                kakaoTalkLinkMessageBuilder.addText("Coups");
-                kakaoTalkLinkMessageBuilder.addImage(imageSrc, 300, 200);
+            kakaoTalkLinkMessageBuilder.addText("Coups");
+            kakaoTalkLinkMessageBuilder.addImage(imageSrc, 300, 200);
 
-            // ¾ÛÀÌ ¼³Ä¡µÇ¾î ÀÖ´Â °æ¿ì kakao<app_key>://kakaolink?execparamkey1=1111 ·Î ÀÌµ¿. ¾ÛÀÌ ¼³Ä¡µÇ¾î ÀÖÁö ¾ÊÀº °æ¿ì market://details?id=com.kakao.sample.kakaolink&referrer=kakaotalklink ¶Ç´Â https://itunes.apple.com/app/id12345·Î ÀÌµ¿
-                kakaoTalkLinkMessageBuilder.addAppLink("CoupsÀÇ ¸µÅ©",
+            // ì•±ì´ ì„¤ì¹˜ë˜ì–´ ìˆëŠ” ê²½ìš° kakao<app_key>://kakaolink?execparamkey1=1111 ë¡œ ì´ë™. ì•±ì´ ì„¤ì¹˜ë˜ì–´ ìˆì§€ ì•Šì€ ê²½ìš° market://details?id=com.kakao.sample.kakaolink&referrer=kakaotalklink ë˜ëŠ” https://itunes.apple.com/app/id12345ë¡œ ì´ë™
+            kakaoTalkLinkMessageBuilder.addAppLink("Coupsì˜ ë§í¬",
                     new AppActionBuilder()
                             .addActionInfo(AppActionInfoBuilder.createAndroidActionInfoBuilder()
                                     .setExecuteParam("execparamkey1=1111").setMarketParam("referrer=Coups").build())
                             .addActionInfo(AppActionInfoBuilder.createiOSActionInfoBuilder(AppActionBuilder.DEVICE_TYPE.PHONE)
                                     .setExecuteParam("execparamkey1=1111").build()).build());
 
-            // À¥½ÎÀÌÆ®¿¡ µî·ÏµÈ kakao<app_key>://kakaolink·Î ÀÌµ¿
-                kakaoTalkLinkMessageBuilder.addAppButton("¾ÛÀ¸·Î ÀÌµ¿");
+            // ì›¹ì‹¸ì´íŠ¸ì— ë“±ë¡ëœ kakao<app_key>://kakaolinkë¡œ ì´ë™
+            kakaoTalkLinkMessageBuilder.addAppButton("ì•±ìœ¼ë¡œ ì´ë™");
 
             //kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder.build(), this);
             kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder.build(), ct);

@@ -22,8 +22,8 @@ import java.util.List;
 
 /**
  *
- * @author cusmaker_Ä£È¯°æ
- * url°ú ÆÄ¶ó¹ÌÅÍ, ÇÚµé·¯¸¦ ÆÄ¶ó¹ÌÅÍ·Î ´øÁ®ÁÖ¸é ÇØ´ç ¿äÃ»À» ½º·¹µå·Î µ¹·Á °á°ú¸¦ ¹İÈ¯ÇÑ´Ù.
+ * @author cusmaker_ì¹œí™˜ê²½
+ * urlê³¼ íŒŒë¼ë¯¸í„°, í•¸ë“¤ëŸ¬ë¥¼ íŒŒë¼ë¯¸í„°ë¡œ ë˜ì ¸ì£¼ë©´ í•´ë‹¹ ìš”ì²­ì„ ìŠ¤ë ˆë“œë¡œ ëŒë ¤ ê²°ê³¼ë¥¼ ë°˜í™˜í•œë‹¤.
  */
 public class ServerRequest extends Thread{
     private HttpClient http = null;
@@ -34,7 +34,7 @@ public class ServerRequest extends Thread{
     private Handler mHandler = null;
 
 
-    private HashMap<Object, Object> param = null;	//ÆÄ¶ó¹ÌÅÍ ÀÓ½Ãº¯¼ö
+    private HashMap<Object, Object> param = null;	//íŒŒë¼ë¯¸í„° ì„ì‹œë³€ìˆ˜
 
     /**
      * @param url
@@ -50,18 +50,18 @@ public class ServerRequest extends Thread{
 
 
     /**
-     * ½º·¹µù Ã³¸®ºÎºĞ¿¡¼­ ¿äÃ»±âÇÑ°ú ÆÄ¶ó¹ÌÅÍÁ¶ÇÕ ±×¸®°í ÇØ´çÁÖ¼Ò·Î ¿äÃ»À» ³¯·ÁÁØ´Ù. ¿äÃ» ¿Ï·áÈÄ ÁöÁ¤µÈ ÇÚµé·¯°¡ ³ª¸ÓÁö¸¦ Ã³¸®ÇÑ´Ù.
+     * ìŠ¤ë ˆë”© ì²˜ë¦¬ë¶€ë¶„ì—ì„œ ìš”ì²­ê¸°í•œê³¼ íŒŒë¼ë¯¸í„°ì¡°í•© ê·¸ë¦¬ê³  í•´ë‹¹ì£¼ì†Œë¡œ ìš”ì²­ì„ ë‚ ë ¤ì¤€ë‹¤. ìš”ì²­ ì™„ë£Œí›„ ì§€ì •ëœ í•¸ë“¤ëŸ¬ê°€ ë‚˜ë¨¸ì§€ë¥¼ ì²˜ë¦¬í•œë‹¤.
      */
     public void run() {
         // TODO Auto-generated method stub
         try{
             http = new DefaultHttpClient();
-            //ÀÀ´ä½Ã°£ Ã³¸® ·çÆ¾
+            //ì‘ë‹µì‹œê°„ ì²˜ë¦¬ ë£¨í‹´
             HttpParams params = http.getParams();
             HttpConnectionParams.setConnectionTimeout(params, 10000);
             HttpConnectionParams.setSoTimeout(params, 10000);
 
-            Log.d("test","¿äÃ» URL : "+url);
+            Log.d("test","ìš”ì²­ URL : "+url);
             post = new HttpPost(url);
             setParameter(param);
             http.execute(post , mResHandler);
@@ -72,7 +72,7 @@ public class ServerRequest extends Thread{
             bundle.putString("result", "fail");
             message.setData(bundle);
             mHandler.sendMessage(message);
-            Log.d("test","¿äÃ» ½ÇÆĞ");
+            Log.d("test","ìš”ì²­ ì‹¤íŒ¨");
             Log.d("test",e.toString());
             // TODO: handle exception
         }
@@ -80,15 +80,15 @@ public class ServerRequest extends Thread{
 
     /**
      * @param param
-     * ÆÄ¶ó¹ÌÅÍ Á¶¸³ÇÔ¼ö
+     * íŒŒë¼ë¯¸í„° ì¡°ë¦½í•¨ìˆ˜
      * @throws UnsupportedEncodingException
      */
     public void setParameter(HashMap<Object , Object> param) throws UnsupportedEncodingException{
         if(param == null){
-            Log.d("test","ÆÄ¶ó¹ÌÅÍ¾øÀ½");
+            Log.d("test","íŒŒë¼ë¯¸í„°ì—†ìŒ");
             return ;
         }
-        List<NameValuePair> nameValueParis = null;	//ÆÄ¶ó¹ÌÅÍ¸¦ ´ã´Â ¸®½ºÆ®
+        List<NameValuePair> nameValueParis = null;	//íŒŒë¼ë¯¸í„°ë¥¼ ë‹´ëŠ” ë¦¬ìŠ¤íŠ¸
 
         String hashKey = null;
         Iterator<Object> iter = null;
@@ -97,9 +97,12 @@ public class ServerRequest extends Thread{
         iter = param.keySet().iterator();
 
         while(iter.hasNext()){
-            hashKey = (String)iter.next();
-            Log.d("test","ÆÄ¶ó¹ÌÅÍ Á¶¸³Áß...   " + hashKey + " : " + param.get(hashKey).toString());
-            nameValueParis.add(new BasicNameValuePair(hashKey , param.get(hashKey).toString()));
+            hashKey = iter.next().toString();
+            if(hashKey.equals("regid")) {
+                Log.d("test", "íŒŒë¼ë¯¸í„° ì¡°ë¦½ì¤‘...   " + hashKey + " : " + param.get(hashKey).toString());
+                nameValueParis.add(new BasicNameValuePair(hashKey, param.get(hashKey).toString()));
+            }
+            nameValueParis.add(new BasicNameValuePair(hashKey, param.get(hashKey).toString()));
         }
         UrlEncodedFormEntity entityRequest = new UrlEncodedFormEntity(nameValueParis, "UTF-8");
         post.setEntity(entityRequest);
