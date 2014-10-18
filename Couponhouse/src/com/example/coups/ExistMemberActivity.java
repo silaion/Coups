@@ -14,7 +14,7 @@ import android.widget.RadioGroup;
 
 import com.google.android.gcm.GCMRegistrar;
 
-public class FirstActivity extends Activity {
+public class ExistMemberActivity extends Activity {
 
     Button register;
     Button before;
@@ -33,7 +33,7 @@ public class FirstActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.firstview);
+        setContentView(R.layout.existember);
 
         et_name = (EditText)findViewById(R.id.editText4);
         et_birth = (EditText)findViewById(R.id.editText1);
@@ -76,7 +76,7 @@ public class FirstActivity extends Activity {
                     GCMRegistrar.register(mContext, PROJECT_ID);
                 }
 
-                Intent intent = new Intent(FirstActivity.this, Tabview.class);
+                Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
                 startActivity(intent);
 
 
@@ -99,7 +99,7 @@ public class FirstActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent intent = new Intent(FirstActivity.this, MainActivity.class);
+                Intent intent = new Intent(ExistMemberActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

@@ -50,11 +50,11 @@
 				android:configChanges="orientation|keyboardHidden"
 				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
 				/>
-		<activity android:name="FirstActivity"
+		<activity android:name=".ExistMemberActivity"
 		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         
-		<activity android:name="ThirdActivity"
+		<activity android:name=".SignUpActivity"
 		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         

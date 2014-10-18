@@ -10,7 +10,7 @@ public class DisclickActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	
-	    setContentView(R.layout.firstview);
+	    setContentView(R.layout.existember);
 	    // TODO Auto-generated method stub
 	}
 

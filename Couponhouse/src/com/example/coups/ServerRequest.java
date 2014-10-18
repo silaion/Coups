@@ -1,9 +1,11 @@
 package com.example.coups;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -29,6 +31,7 @@ public class ServerRequest extends Thread{
     private HttpClient http = null;
     private HttpPost post = null;
     private String url = null;
+    private Context context = null;
 
     private ResponseHandler<String> mResHandler = null;
     private Handler mHandler = null;
@@ -41,11 +44,12 @@ public class ServerRequest extends Thread{
      * @param param
      * @param mResHandler
      */
-    public ServerRequest(String url ,HashMap<Object, Object> param , ResponseHandler<String> mResHandler , Handler mHandler){
+    public ServerRequest(String url ,HashMap<Object, Object> param , ResponseHandler<String> mResHandler , Handler mHandler, Context context){
         this.url = url;
         this.param = param;
         this.mResHandler = mResHandler;
         this.mHandler = mHandler;
+        this.context = context;
     }
 
 
@@ -72,8 +76,9 @@ public class ServerRequest extends Thread{
             bundle.putString("result", "fail");
             message.setData(bundle);
             mHandler.sendMessage(message);
-            Log.d("test","요청 실패");
-            Log.d("test",e.toString());
+            Log.d("test", "요청 실패");
+            Log.d("test", e.toString());
+            Toast.makeText(context, "회원가입에 실패하였습니다. 데이터나 와이파이 연결을 확인하시고 다시 시도해주세요.", Toast.LENGTH_LONG);
             // TODO: handle exception
         }
     }
@@ -104,7 +109,7 @@ public class ServerRequest extends Thread{
             }
             nameValueParis.add(new BasicNameValuePair(hashKey, param.get(hashKey).toString()));
         }
-        UrlEncodedFormEntity entityRequest = new UrlEncodedFormEntity(nameValueParis, "UTF-8");
+        UrlEncodedFormEntity entityRequest = new UrlEncodedFormEntity(nameValueParis, "euc_kr");
         post.setEntity(entityRequest);
     }
 }

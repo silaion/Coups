@@ -15,6 +15,7 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 import com.google.android.gcm.GCMBaseIntentService;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -91,11 +92,14 @@ public class GCMIntentService extends GCMBaseIntentService {
     Notification mNoti;
     static PendingIntent pIntent;
 
+    Context mContext = null;
+
     // GCM에 정상적으로 등록되었을경우 발생하는 메소드
     @Override
     protected void onRegistered(Context arg0, String arg1) {
         // TODO Auto-generated method stub
         Log.d("test", "등록ID:" + arg1);
+        mContext = arg0;
 
         HashMap<Object, Object> param = new HashMap<Object, Object>();
         param.put("regid", arg1);
@@ -105,7 +109,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         param.put("phoneNum", "01088924959");
         //serverRequest_insert = new ServerRequest("http://112.172.217.74:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler);
         //serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler);
-        serverRequest_insert = new ServerRequest("http://192.168.0.16:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler);
+        serverRequest_insert = new ServerRequest("http://192.168.11.6:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler, arg0);
         serverRequest_insert.start();
     }
 
@@ -120,12 +124,10 @@ public class GCMIntentService extends GCMBaseIntentService {
             String result = msg.getData().getString("result");
 
             if (result.equals("success")) {
-//                Toast.makeText(ThirdActivity.mContext,"데이터베이스에 regid가 등록되었습니다.", Toast.LENGTH_LONG).show();
-//                Toast.makeText(FirstActivity.mContext,"데이터베이스에 regid가 등록되었습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext,"Coups에 가입 되신것을 환영합니다.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되었습니다.");
             } else {
-//            	Toast.makeText(ThirdActivity.mContext,"데이터베이스에 regid가 등록되지 않았습니다.", Toast.LENGTH_LONG).show();
-//                Toast.makeText(FirstActivity.mContext,"데이터베이스에 regid가 등록되지 않았습니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "중복되는 사용자가 있습니다.\n 이미 가입하셨다면 기존 사용자등록을 이용해주세요.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되지 않았습니다.");
             }
         }

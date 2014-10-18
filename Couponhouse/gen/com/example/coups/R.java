@@ -1519,7 +1519,7 @@ containing a value of this type.
         public static final int discountcoupontab=0x7f030032;
         public static final int discountsell=0x7f030033;
         public static final int favorite=0x7f030034;
-        public static final int firstview=0x7f030035;
+        public static final int existember =0x7f030035;
         public static final int info=0x7f030036;
         public static final int infoclick=0x7f030037;
         public static final int infos=0x7f030038;
@@ -1539,7 +1539,7 @@ containing a value of this type.
         public static final int tabone=0x7f030046;
         public static final int tabthr=0x7f030047;
         public static final int tabtwo=0x7f030048;
-        public static final int third=0x7f030049;
+        public static final int signup =0x7f030049;
         public static final int usecoupon=0x7f03004a;
         public static final int usecouponlist=0x7f03004b;
     }
