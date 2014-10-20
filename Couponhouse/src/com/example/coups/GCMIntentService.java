@@ -9,11 +9,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gcm.GCMBaseIntentService;
@@ -105,14 +105,17 @@ public class GCMIntentService extends GCMBaseIntentService {
         Log.d("test", "등록ID:" + arg1);
         mContext = arg0;
 
+        getPreferences();
+
         HashMap<Object, Object> param = new HashMap<Object, Object>();
+
         param.put("regid", arg1);
-        param.put("name", "장대승");
-        param.put("gender", "1");
-        param.put("birth", "19910130");
-        param.put("phoneNum", "01012340001");
-        //serverRequest_insert = new ServerRequest("http://112.172.217.79:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler, arg0);
-        serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler, arg0);
+        param.put("name", name);
+        param.put("gender", gender);
+        param.put("birth", birth);
+        param.put("phoneNum", phoneNum);
+        serverRequest_insert = new ServerRequest("http://112.172.217.79:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler, arg0);
+        //serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler, arg0);
         serverRequest_insert.start();
     }
 
@@ -189,23 +192,17 @@ public class GCMIntentService extends GCMBaseIntentService {
         Log.d("test", "메시지가 왔습니다 : " + gcm_msg);
         showMessage();
     }
-
+    @SuppressWarnings("deprecation")
     private void setNotification(Context context, String message){
-        NotificationManager nm;
-        Notification mNoti;
-        try{
-            nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            PendingIntent pIntent = PendingIntent.getActivity(context, 0, new Intent(context, TabOneActivity.class), 0);
-            mNoti = new NotificationCompat.Builder(getApplicationContext())
-                    .setContentTitle(message)
-                    .setAutoCancel(true)
-                    .setContentIntent(pIntent)
-                    .build();
-            nm.notify(0, mNoti);
-        }catch(Exception e){
-            e.printStackTrace();
-            Log.d("GCM_setNotification", "failed");
-        }
+        int icon = R.drawable.ic_launcher;
+        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification(icon, message, 3000);
+        String title = context.getString(R.string.app_name);
+        Intent notificationIntent = new Intent(context, MainActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+        notification.setLatestEventInfo(context, title, message, intent);
+        notificationManager.notify(0, notification);
     }
 
 
@@ -238,4 +235,12 @@ public class GCMIntentService extends GCMBaseIntentService {
             Log.d("GCM_handler", "수신 메시지 : " + gcm_msg);
         }
     };
+
+    private void getPreferences(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        name = pref.getString("Name", "");
+        gender = pref.getString("Gender", "");
+        phoneNum = pref.getString("PhoneNumber", "");
+        birth = pref.getString("Birthday", "");
+    }
 }
