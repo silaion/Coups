@@ -92,7 +92,11 @@ public class GCMIntentService extends GCMBaseIntentService {
     Notification mNoti;
     static PendingIntent pIntent;
 
+    Global global;
+
     Context mContext = null;
+
+    String name, gender, phoneNum, birth;
 
     // GCM에 정상적으로 등록되었을경우 발생하는 메소드
     @Override
@@ -106,10 +110,9 @@ public class GCMIntentService extends GCMBaseIntentService {
         param.put("name", "장대승");
         param.put("gender", "1");
         param.put("birth", "19910130");
-        param.put("phoneNum", "01088924959");
-        //serverRequest_insert = new ServerRequest("http://112.172.217.74:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler);
-        //serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler);
-        serverRequest_insert = new ServerRequest("http://192.168.11.6:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler, arg0);
+        param.put("phoneNum", "01012340001");
+        //serverRequest_insert = new ServerRequest("http://112.172.217.79:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler, arg0);
+        serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler, arg0);
         serverRequest_insert.start();
     }
 
@@ -122,10 +125,12 @@ public class GCMIntentService extends GCMBaseIntentService {
         public void handleMessage(Message msg) {
             serverRequest_insert.interrupt();
             String result = msg.getData().getString("result");
+            global = new Global();
 
             if (result.equals("success")) {
                 Toast.makeText(mContext,"Coups에 가입 되신것을 환영합니다.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되었습니다.");
+                global.start = true;
             } else {
                 Toast.makeText(mContext, "중복되는 사용자가 있습니다.\n 이미 가입하셨다면 기존 사용자등록을 이용해주세요.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되지 않았습니다.");
@@ -170,16 +175,17 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context arg0, Intent arg1) {
         // TODO Auto-generated method stub
         gcm_msg = arg1.getExtras().getString("test");
+         long[] pattern = {3000, 500, 0, 2000, 400};
 
         try {
             Vibrator vibrator =
                     (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(1000);
+            //vibrator.vibrate(pattern, 1);
+            vibrator.vibrate(3000);
             setNotification(arg0, gcm_msg);
         } catch (Exception e) {
             Log.e("GCM_onMessage", "failed");
         }
-
         Log.d("test", "메시지가 왔습니다 : " + gcm_msg);
         showMessage();
     }
@@ -191,7 +197,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             PendingIntent pIntent = PendingIntent.getActivity(context, 0, new Intent(context, TabOneActivity.class), 0);
             mNoti = new NotificationCompat.Builder(getApplicationContext())
-                    .setContentTitle(gcm_msg)
+                    .setContentTitle(message)
                     .setAutoCancel(true)
                     .setContentIntent(pIntent)
                     .build();

@@ -103,10 +103,7 @@ public class ServerRequest extends Thread{
 
         while(iter.hasNext()){
             hashKey = iter.next().toString();
-            if(hashKey.equals("regid")) {
-                Log.d("test", "파라미터 조립중...   " + hashKey + " : " + param.get(hashKey).toString());
-                nameValueParis.add(new BasicNameValuePair(hashKey, param.get(hashKey).toString()));
-            }
+            Log.d("test", "파라미터 조립중...   " + hashKey + " : " + param.get(hashKey).toString());
             nameValueParis.add(new BasicNameValuePair(hashKey, param.get(hashKey).toString()));
         }
         UrlEncodedFormEntity entityRequest = new UrlEncodedFormEntity(nameValueParis, "euc_kr");
