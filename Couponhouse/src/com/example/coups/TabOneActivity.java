@@ -1,27 +1,31 @@
 package com.example.coups;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.TextView;
 
 public class TabOneActivity extends Activity {
-	
-	Thread vib;
-	static Intent i;
+    Global global;
+    TextView c_Number;
+    AdapterThread adapterThread;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    
 	    setContentView(R.layout.tabone);
 	    // TODO Auto-generated method stub
-//	    Intent i = new Intent(getApplicationContext(), VibrateService.class);
-//		i.putExtra("phone", "1");
-//		startService(i);
+        global = new Global();
+
+        c_Number = (TextView) findViewById(R.id.tab_c_Number);
+        adapterThread = new AdapterThread();
+        adapterThread.execute(null, null, null);
 	}
-	
-	@Override
-	protected void onDestroy(){
-		super.onDestroy();
-	}
+
+    private class AdapterThread extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... params) {
+            c_Number.setText("회원번호 : " + global.c_Number);
+            return null;
+        }
+    }
 }

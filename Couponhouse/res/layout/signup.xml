@@ -129,7 +129,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000" />
 
-	        <sign_radioGroup
+	        <RadioGroup
 	            android:id="@+id/sign_radioGroup"
 	            android:layout_width="fill_parent"
 	            android:layout_height="fill_parent"
@@ -137,6 +137,7 @@
 	            android:layout_alignRight="@+id/editText4"
 	            android:layout_alignTop="@+id/textView3"
 	            android:layout_toRightOf="@+id/textView4"
+                android:checkedButton="@+id/sign_rb_male"
 	            android:orientation="horizontal" >
 
 	            <RadioButton
@@ -155,6 +156,6 @@
 	                android:text="여"
 	                android:textColor="#000000" />
 
-	        </sign_radioGroup>
+	        </RadioGroup>
 
 </RelativeLayout>

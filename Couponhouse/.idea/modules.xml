@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Couponhouse.iml" filepath="$PROJECT_DIR$/Couponhouse.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../appcompat_v7/appcompat_v7.iml" filepath="$PROJECT_DIR$/../appcompat_v7/appcompat_v7.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook/facebook.iml" filepath="$PROJECT_DIR$/../facebook/facebook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/../google-play-services_lib/google-play-services_lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../kakao/kakao.iml" filepath="$PROJECT_DIR$/../kakao/kakao.iml" />
+      <module fileurl="file://$USER_HOME$/SkyDrive/workspace/myapp/myapp.iml" filepath="$USER_HOME$/SkyDrive/workspace/myapp/myapp.iml" />
+    </modules>
+  </component>
+</project>
+

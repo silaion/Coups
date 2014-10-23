@@ -24,6 +24,8 @@ public class ExistMemberActivity extends Activity {
 
     static Context mContext;
 
+    Global global;
+
     Sign_up_in signui;
 
     String name, gender = "1", phoneNum, birth;
@@ -34,6 +36,8 @@ public class ExistMemberActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.existember);
+
+        global = new Global();
 
         et_name = (EditText)findViewById(R.id.editText4);
         et_birth = (EditText)findViewById(R.id.editText1);
@@ -57,8 +61,6 @@ public class ExistMemberActivity extends Activity {
             }
         });
 
-
-
         mContext = this;
         register = (Button)findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener() {
@@ -69,27 +71,20 @@ public class ExistMemberActivity extends Activity {
                 GCMRegistrar.checkManifest(mContext);
                 if (GCMRegistrar.getRegistrationId(mContext).equals("")) {
                     GCMRegistrar.register(mContext, PROJECT_ID);
-
                 } else {
                     // 이미 GCM 을 상요하기위해 등록ID를 구해왔음
                     GCMRegistrar.unregister(mContext);
                     GCMRegistrar.register(mContext, PROJECT_ID);
                 }
 
-                Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
-                startActivity(intent);
-
-
                 name = et_name.getText().toString();
                 birth = et_birth.getText().toString();
                 phoneNum = et_phoneNum.getText().toString();
                 savePreferences();
 
+                Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
+                startActivity(intent);
                 Log.d("SharedPreference", name + " " + gender + " " + birth + " " + phoneNum);
-
-                signui = new Sign_up_in(mContext, name, gender, phoneNum, birth);
-                //signui.insertProcess();
-//				signui.loginProcess();				
             }
         });
 
@@ -112,6 +107,10 @@ public class ExistMemberActivity extends Activity {
         editor.putString("Gender", gender);
         editor.putString("PhoneNumber", phoneNum);
         editor.putString("Birthday", birth);
+        global.name = name;
+        global.gender = gender;
+        global.phoneNum = phoneNum;
+        global.birth = birth;
         editor.commit();
     }
 }

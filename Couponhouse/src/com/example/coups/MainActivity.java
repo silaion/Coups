@@ -16,6 +16,8 @@ public class MainActivity extends Activity {
     Button user;
     Button signin;
 
+    Global global;
+
     Sign_up_in sign;
 
     static String name, phoneNum, birth, gender = "1";
@@ -49,8 +51,25 @@ public class MainActivity extends Activity {
 
         getPreferences();
         Log.d("pref", name + " " + gender + " " + birth + " " + phoneNum);
-//		sign = new Sign_up_in(this, name, gender, phoneNum, birth);
-//		sign.loginProcess();
+
+//        global = new Global();
+//
+//        if(!name.equals("") && !gender.equals("") && !birth.equals("") && !phoneNum.equals("")){
+//            global.name = name;
+//            global.gender = gender;
+//            global.birth = birth;
+//            global.phoneNum = phoneNum;
+//
+//            sign = new Sign_up_in(this, name, gender, phoneNum, birth);
+//            sign.loginProcess();
+//            while(true){
+//                if(global.start){
+//                    Intent intent = new Intent(MainActivity.this, Tabview.class);
+//                    startActivity(intent);
+//                }
+//            }
+//        }
+
 
     }
 
@@ -60,7 +79,6 @@ public class MainActivity extends Activity {
         gender = pref.getString("Gender", "");
         phoneNum = pref.getString("PhoneNumber", "");
         birth = pref.getString("Birthday", "");
-
     }
 
     @Override

@@ -104,18 +104,19 @@ public class GCMIntentService extends GCMBaseIntentService {
         // TODO Auto-generated method stub
         Log.d("test", "등록ID:" + arg1);
         mContext = arg0;
+        global = new Global();
 
         HashMap<Object, Object> param = new HashMap<Object, Object>();
         param.put("regid", arg1);
-        param.put("name", "장대승");
-        param.put("gender", "1");
-        param.put("birth", "19910130");
-        param.put("phoneNum", "01012340001");
+        param.put("name", global.name);
+        param.put("gender", global.gender);
+        param.put("birth", global.birth);
+        param.put("phoneNum", global.phoneNum);
         //serverRequest_insert = new ServerRequest("http://112.172.217.79:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler, arg0);
-        serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler, arg0);
+        serverRequest_insert = new ServerRequest("http://112.172.217.79:8080/JSP_Server/insert.jsp", param, mResHandler, mHandler, arg0);
+        //serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler, arg0);
         serverRequest_insert.start();
     }
-
 
     /**
      * 요청후 핸들러에의해 리스트뷰 구성
@@ -175,19 +176,24 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context arg0, Intent arg1) {
         // TODO Auto-generated method stub
         gcm_msg = arg1.getExtras().getString("test");
-         long[] pattern = {3000, 500, 0, 2000, 400};
+        if(gcm_msg.startsWith("N_")){
+            global.c_Number = gcm_msg.substring(2);
+            Log.d("Customer Number", String.valueOf(global.c_Number));
+        }else {
+            long[] pattern = {3000, 500, 0, 2000, 400};
 
-        try {
-            Vibrator vibrator =
-                    (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
-            //vibrator.vibrate(pattern, 1);
-            vibrator.vibrate(3000);
-            setNotification(arg0, gcm_msg);
-        } catch (Exception e) {
-            Log.e("GCM_onMessage", "failed");
+            try {
+                Vibrator vibrator =
+                        (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(pattern, 1);
+                //vibrator.vibrate(3000);
+                setNotification(arg0, gcm_msg);
+            } catch (Exception e) {
+                Log.e("GCM_onMessage", "failed");
+            }
+            Log.d("test", "메시지가 왔습니다 : " + gcm_msg);
+            showMessage();
         }
-        Log.d("test", "메시지가 왔습니다 : " + gcm_msg);
-        showMessage();
     }
 
     private void setNotification(Context context, String message){

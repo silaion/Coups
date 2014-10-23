@@ -37,7 +37,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/benefit_name_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -75,11 +75,11 @@
         android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/benefit_many_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView4"
-        android:layout_alignBottom="@+id/textView4"
+        android:layout_alignBaseline="@+id/benefit_name_1"
+        android:layout_alignBottom="@+id/benefit_name_1"
         android:layout_alignRight="@+id/textView3"
         android:layout_marginRight="17dp"
         android:text="10"
@@ -88,25 +88,23 @@
         android:textSize="20dp" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/benefit_name_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_below="@+id/textView4"
+        android:layout_alignLeft="@+id/benefit_name_1"
+        android:layout_below="@+id/benefit_name_1"
         android:layout_marginTop="32dp"
-        android:text="치즈케익 무료"
         android:textColor="#000000"
         android:textSize="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/benefit_many_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView6"
-        android:layout_alignBottom="@+id/textView6"
-        android:layout_alignLeft="@+id/textView5"
-        android:text="20"
+        android:layout_alignBaseline="@+id/benefit_name_2"
+        android:layout_alignBottom="@+id/benefit_name_2"
+        android:layout_alignLeft="@+id/benefit_many_1"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
         android:textSize="20dp" />

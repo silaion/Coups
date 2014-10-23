@@ -35,9 +35,9 @@ public class ServerRequest extends Thread{
 
     private ResponseHandler<String> mResHandler = null;
     private Handler mHandler = null;
-
-
     private HashMap<Object, Object> param = null;	//파라미터 임시변수
+
+    Global global;
 
     /**
      * @param url
@@ -50,6 +50,7 @@ public class ServerRequest extends Thread{
         this.mResHandler = mResHandler;
         this.mHandler = mHandler;
         this.context = context;
+        global = new Global();
     }
 
 
@@ -69,6 +70,7 @@ public class ServerRequest extends Thread{
             post = new HttpPost(url);
             setParameter(param);
             http.execute(post , mResHandler);
+            global.start = true;
 
         }catch (Exception e) {
             Message message = mHandler.obtainMessage();
@@ -78,7 +80,8 @@ public class ServerRequest extends Thread{
             mHandler.sendMessage(message);
             Log.d("test", "요청 실패");
             Log.d("test", e.toString());
-            Toast.makeText(context, "회원가입에 실패하였습니다. 데이터나 와이파이 연결을 확인하시고 다시 시도해주세요.", Toast.LENGTH_LONG);
+            Toast.makeText(context, "회원가입에 실패하였습니다. 데이터나 와이파이 연결을 확인하시고 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+
             // TODO: handle exception
         }
     }

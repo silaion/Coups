@@ -30,6 +30,7 @@ public class Sign_up_in {
     Thread th;
     Context context;
     String name, phoneNum, birth, gender;
+    Global global;
 
     public Sign_up_in(Context context, String name,String gender,String birth,String phoneNum){
         this.context = context;
@@ -37,6 +38,7 @@ public class Sign_up_in {
         this.gender = gender;
         this.birth = birth;
         this.phoneNum = phoneNum;
+        global = new Global();
     }
 
     private ResponseHandler<String> responseHandler;
@@ -217,6 +219,7 @@ public class Sign_up_in {
                 message.setData(bundle);
                 //핸들러에게 메시지를 전송함.
                 handler.sendMessage(message);
+                global.start = true;
                 return result;
             }
         };
