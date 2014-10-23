@@ -60,6 +60,7 @@ public class MainActivity extends Activity {
         gender = pref.getString("Gender", "");
         phoneNum = pref.getString("PhoneNumber", "");
         birth = pref.getString("Birthday", "");
+
     }
 
     @Override
