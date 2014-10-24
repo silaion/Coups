@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gcm.GCMBaseIntentService;
@@ -22,6 +21,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 public class GCMIntentService extends GCMBaseIntentService {
@@ -129,7 +129,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             global = new Global();
 
             if (result.equals("success")) {
-                Toast.makeText(mContext,"Coups에 가입 되신것을 환영합니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "Coups에 가입 되신것을 환영합니다.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되었습니다.");
                 global.start = true;
             } else {
@@ -176,16 +176,18 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context arg0, Intent arg1) {
         // TODO Auto-generated method stub
         gcm_msg = arg1.getExtras().getString("test");
-        if(gcm_msg.startsWith("N_")){
+        if (gcm_msg.startsWith("N_")) {
             global.c_Number = gcm_msg.substring(2);
             Log.d("Customer Number", String.valueOf(global.c_Number));
-        }else {
-            long[] pattern = {3000, 500, 0, 2000, 400};
+        } else {
+
+            long[] pattern = {0, 3000, 100, 3000,100};
 
             try {
+                gcm_msg = URLDecoder.decode(gcm_msg, "EUC-KR");
                 Vibrator vibrator =
                         (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
-                vibrator.vibrate(pattern, 1);
+                vibrator.vibrate(pattern, -1);
                 //vibrator.vibrate(3000);
                 setNotification(arg0, gcm_msg);
             } catch (Exception e) {
@@ -195,20 +197,21 @@ public class GCMIntentService extends GCMBaseIntentService {
             showMessage();
         }
     }
-
-    private void setNotification(Context context, String message){
-        NotificationManager nm;
-        Notification mNoti;
-        try{
-            nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            PendingIntent pIntent = PendingIntent.getActivity(context, 0, new Intent(context, TabOneActivity.class), 0);
-            mNoti = new NotificationCompat.Builder(getApplicationContext())
-                    .setContentTitle(message)
-                    .setAutoCancel(true)
-                    .setContentIntent(pIntent)
-                    .build();
-            nm.notify(0, mNoti);
-        }catch(Exception e){
+    @SuppressWarnings("deprecation")
+    private void setNotification(Context context, String message) {
+        long when = System.currentTimeMillis();
+        try {
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = new Notification(R.drawable.icon, message, when);
+            String title = context.getString(R.string.app_name);
+            Intent notificationIntent = new Intent(context, MainActivity.class);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+            notification.setLatestEventInfo(context, title, message, intent);
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            notificationManager.notify(0, notification);
+        } catch (Exception e) {
             e.printStackTrace();
             Log.d("GCM_setNotification", "failed");
         }
