@@ -10,12 +10,16 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
     Button user;
     Button signin;
+
     Global global;
+
     Sign_up_in sign;
+
     static String name, phoneNum, birth, gender = "1";
 
     @Override
@@ -48,14 +52,14 @@ public class MainActivity extends Activity {
         getPreferences();
         Log.d("pref", name + " " + gender + " " + birth + " " + phoneNum);
 
-        global = new Global();
-
-        if(!name.equals("") && !gender.equals("") && !birth.equals("") && !phoneNum.equals("")){
-            global.name = name;
-            global.gender = gender;
-            global.birth = birth;
-            global.phoneNum = phoneNum;
-
+//        global = new Global();
+//
+//        if(!name.equals("") && !gender.equals("") && !birth.equals("") && !phoneNum.equals("")){
+//            global.name = name;
+//            global.gender = gender;
+//            global.birth = birth;
+//            global.phoneNum = phoneNum;
+//
 //            sign = new Sign_up_in(this, name, gender, phoneNum, birth);
 //            sign.loginProcess();
 //            while(true){
@@ -63,11 +67,10 @@ public class MainActivity extends Activity {
 //                    Intent intent = new Intent(MainActivity.this, Tabview.class);
 //                    startActivity(intent);
 //                }
-//            }//while
+//            }
+//        }
 
-            Intent intent = new Intent(MainActivity.this, Tabview.class);
-            startActivity(intent);
-        }
+
     }
 
     private void getPreferences(){
@@ -82,6 +85,7 @@ public class MainActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch(keyCode) {
             case KeyEvent.KEYCODE_BACK:
+                Toast.makeText(this, "뒤로가기버튼 눌림", Toast.LENGTH_SHORT).show();
                 new AlertDialog.Builder(this)
                         .setTitle("프로그램 종료")
                         .setMessage("프로그램을 종료 하시겠습니까?")

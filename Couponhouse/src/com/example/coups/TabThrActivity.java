@@ -13,19 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class TabThrActivity extends ListActivity {
 
@@ -55,7 +57,7 @@ public class TabThrActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // When clicked, show a toast with the TextView text
 
-                global.s_Number = store.get(position).get("Number").toString();
+                global.s_number = store.get(position).get("Number").toString();
                 Intent intent = new Intent(TabThrActivity.this, CouponclickActivity.class);
                 startActivity(intent);
             }});
@@ -134,20 +136,30 @@ public class TabThrActivity extends ListActivity {
         boolean inName = false, inTotal = false, inCurrent = false, inDue_date = false, inNumber = false;
         @Override
         protected Void doInBackground(Void... params) {
+            HttpClient http = new DefaultHttpClient();
             HashMap<String, Object> temp = new HashMap<String, Object>();
 
             try {
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(url);
-                List nameValuePairs = new ArrayList(1);
+                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("c_number", global.c_Number));
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                // HTTP Post 요청 실행
-                HttpResponse response = httpClient.execute(httpPost);
-                InputStream is = response.getEntity().getContent();
-//
-//                URL targetURL = new URL(url);
-//                InputStream is = targetURL.openStream();
+
+                HttpParams param = http.getParams();
+                HttpConnectionParams.setConnectionTimeout(param, 5000);
+                HttpConnectionParams.setSoTimeout(param, 5000);
+
+                HttpPost httpPost = new HttpPost(url);
+                UrlEncodedFormEntity entityRequest = new UrlEncodedFormEntity(nameValuePairs, "EUC-KR");
+
+                httpPost.setEntity(entityRequest);
+                http.execute(httpPost);
+
+                //이 밑에 3개는 딱히 필요없지 않나 싶다
+//                HttpResponse responsePost = http.execute(httpPost);
+//                HttpEntity resEntity = responsePost.getEntity();
+//                tv_post.setText( EntityUtils.toString(resEntity));
+
+                URL targetURL = new URL(url);
+                InputStream is = targetURL.openStream();
 
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
