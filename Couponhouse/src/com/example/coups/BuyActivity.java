@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BuyActivity extends ListActivity {
-
-    /** Called when the activity is first created. */
     ArrayList<HashMap<String, Object>> searchResults;
     ArrayList<HashMap<String, Object>> players;
     LayoutInflater inflater;
@@ -43,30 +41,19 @@ public class BuyActivity extends ListActivity {
         });
         inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        //these arrays are just the data that 
-        //I'll be using to populate the ArrayList
-        //You can use our own methods to get the data
         String names[]={"한경카페 베이글 종류 30% 할인권","한경카페 모든 음료 10% 할인권","안성카페 모든 음료 20% 할인권","경기카페 모든 케익류 10% 할인권",};
-
-        String teams[]={"유효기간 (2014.9.1~2014.12.31)","유효기간 (2014.9.1~2014.12.31)","유효기간 (2014.9.1~2014.12.31)","유효기간 (2014.9.1~2014.12.31)"};
 
         players=new ArrayList<HashMap<String,Object>>();
 
-        //HashMap for storing a single row
         HashMap<String , Object> temp;
 
-        //total number of rows in the ListView
         int noOfPlayers=names.length;
 
-        //now populate the ArrayList players
         for(int i=0;i<noOfPlayers;i++)
         {
             temp=new HashMap<String, Object>();
 
             temp.put("name", names[i]);
-            temp.put("team", teams[i]);
-
-            //add the row to the ArrayList
             players.add(temp);
         }
 
@@ -92,21 +79,13 @@ public class BuyActivity extends ListActivity {
                             searchResults.add(players.get(i));
                     }
                 }
-
                 adapter.notifyDataSetChanged();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-
-
-            }
-
-
+            public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub
-
             }
         });
     }
@@ -116,26 +95,20 @@ public class BuyActivity extends ListActivity {
     private class CustomAdapter extends ArrayAdapter<HashMap<String, Object>>
     {
 
-        public CustomAdapter(Context context, int textViewResourceId,
-                             ArrayList<HashMap<String, Object>> Strings) {
-
+        public CustomAdapter(Context context, int textViewResourceId,ArrayList<HashMap<String, Object>> Strings) {
             //let android do the initializing :)
             super(context, textViewResourceId, Strings);
         }
 
-
         //class for caching the views in a row
-        private class ViewHolder
-        {
+        private class ViewHolder{
             TextView name,team;
-
         }
 
         ViewHolder viewHolder;
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             if(convertView==null)
             {
                 //inflate the custom layout
@@ -144,26 +117,19 @@ public class BuyActivity extends ListActivity {
 
                 //cache the views
                 viewHolder.name=(TextView) convertView.findViewById(R.id.name);
-                viewHolder.team=(TextView) convertView.findViewById(R.id.team);
+                //viewHolder.team=(TextView) convertView.findViewById(R.id.team);
 
                 //link the cached views to the convertview
                 convertView.setTag(viewHolder);
-
             }
             else
                 viewHolder=(ViewHolder) convertView.getTag();
 
-
-
             //set the data to be displayed
             viewHolder.name.setText(players.get(position).get("name").toString());
-            viewHolder.team.setText(players.get(position).get("team").toString());
-
+//            viewHolder.team.setText(players.get(position).get("team").toString());
             //return the view to be displayed
             return convertView;
         }
     }
-
-    // TODO Auto-generated method stub
-
 }

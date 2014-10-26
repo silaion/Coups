@@ -65,7 +65,7 @@ public class BuytwoActivity extends ListActivity {
             temp=new HashMap<String, Object>();
 
             temp.put("name", names[i]);
-            temp.put("team", teams[i]);
+            //temp.put("team", teams[i]);
 
             //add the row to the ArrayList
             players.add(temp);
@@ -112,7 +112,7 @@ public class BuytwoActivity extends ListActivity {
 
                 //cache the views
                 viewHolder.name=(TextView) convertView.findViewById(R.id.name);
-                viewHolder.team=(TextView) convertView.findViewById(R.id.team);
+                //viewHolder.team=(TextView) convertView.findViewById(R.id.team);
 
                 //link the cached views to the convertview
                 convertView.setTag(viewHolder);
@@ -125,7 +125,7 @@ public class BuytwoActivity extends ListActivity {
 
             //set the data to be displayed
             viewHolder.name.setText(players.get(position).get("name").toString());
-            viewHolder.team.setText(players.get(position).get("team").toString());
+//            viewHolder.team.setText(players.get(position).get("team").toString());
 
             //return the view to be displayed
             return convertView;
