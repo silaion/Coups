@@ -13,21 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import org.apache.http.NameValuePair;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TabThrActivity extends ListActivity {
 
@@ -57,7 +55,7 @@ public class TabThrActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // When clicked, show a toast with the TextView text
 
-                global.s_number = store.get(position).get("Number").toString();
+                global.s_Number = store.get(position).get("Number").toString();
                 Intent intent = new Intent(TabThrActivity.this, CouponclickActivity.class);
                 startActivity(intent);
             }});
@@ -136,30 +134,20 @@ public class TabThrActivity extends ListActivity {
         boolean inName = false, inTotal = false, inCurrent = false, inDue_date = false, inNumber = false;
         @Override
         protected Void doInBackground(Void... params) {
-            HttpClient http = new DefaultHttpClient();
             HashMap<String, Object> temp = new HashMap<String, Object>();
 
             try {
-                ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                nameValuePairs.add(new BasicNameValuePair("c_number", global.c_Number));
-
-                HttpParams param = http.getParams();
-                HttpConnectionParams.setConnectionTimeout(param, 5000);
-                HttpConnectionParams.setSoTimeout(param, 5000);
-
+                HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(url);
-                UrlEncodedFormEntity entityRequest = new UrlEncodedFormEntity(nameValuePairs, "EUC-KR");
-
-                httpPost.setEntity(entityRequest);
-                http.execute(httpPost);
-
-                //이 밑에 3개는 딱히 필요없지 않나 싶다
-//                HttpResponse responsePost = http.execute(httpPost);
-//                HttpEntity resEntity = responsePost.getEntity();
-//                tv_post.setText( EntityUtils.toString(resEntity));
-
-                URL targetURL = new URL(url);
-                InputStream is = targetURL.openStream();
+                List nameValuePairs = new ArrayList(1);
+                nameValuePairs.add(new BasicNameValuePair("c_number", global.c_Number));
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                // HTTP Post 요청 실행
+                HttpResponse response = httpClient.execute(httpPost);
+                InputStream is = response.getEntity().getContent();
+//
+//                URL targetURL = new URL(url);
+//                InputStream is = targetURL.openStream();
 
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
@@ -230,8 +218,6 @@ public class TabThrActivity extends ListActivity {
         }
     }
 
-
-
     private class CustomAdapter extends ArrayAdapter<HashMap<String, Object>>
     {
 
@@ -280,76 +266,4 @@ public class TabThrActivity extends ListActivity {
             return convertView;
         }
     }
-
-//    class AdapterThread extends AsyncTask<Void, Void, Void> {
-//        ArrayList<HashMap<String, Object>> store;
-//        HashMap<String, Object> temp = new HashMap<String, Object>();
-//        private Handler handler;
-//
-//        String mAddr = "http://112.172.217.79:8080/JSP_Server/xmlout.jsp";
-//        //String mAddr = "http://172.30.76.31:8081/gcm_jsp/xmlout.jsp";
-//        String tagName;
-//        int eventType;
-//        boolean flag = false;
-//        boolean inName = false, inAddr = false;
-//
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            try {
-//                URL targetURL = new URL(mAddr);
-//                InputStream is = targetURL.openStream();
-//
-//                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-//                factory.setNamespaceAware(true);
-//                XmlPullParser parser = factory.newPullParser();
-//
-//                parser.setInput(is, null);
-//
-//                store = new ArrayList<HashMap<String, Object>>();
-//
-//                eventType = parser.getEventType();
-//                while (eventType != XmlPullParser.END_DOCUMENT) { //최초 title테그안에 쓸데없는 내용이 있어서 추가해줬음.
-//                    switch (eventType) {
-//                        case XmlPullParser.START_TAG:
-//                            tagName = parser.getName();
-//                            Log.d("tagName", tagName);
-//                            if (tagName.equals("data")) {
-//                                temp = new HashMap<String, Object>();
-//                            } else if (tagName.equals("Name")) {
-//                                inName = true;
-//                            } else if (tagName.equals("Total")) {
-//                                inAddr = true;
-//                            }
-//                            break;
-//                        case XmlPullParser.TEXT:
-//                            if (tagName.equals("Name")) {
-//                                temp.put("Name", parser.getText());
-//                            } else if (tagName.equals("Total")) {
-//                                temp.put("Total", parser.getText());
-//                            } else if (tagName.equals("Current")){
-//                                temp.put("Current", parser.getText());
-//                            } else if(tagName.equals("Due_date")){
-//                                temp.put("Due_data", parser.getText());
-//                            }
-//                            break;
-//                        case XmlPullParser.END_TAG:
-//                            tagName = parser.getName();
-//                            if (tagName.equals("data")) {
-//                                store.add(temp);
-//                            } else if (tagName.equals("Name")) {
-//                                inName = false;
-//                            } else if (tagName.equals("Total")) {
-//                                inAddr = false;
-//                            }
-//                            break;
-//                    }
-//                    eventType = parser.next();
-//                }
-//                flag = true;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//    }
 }

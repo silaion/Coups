@@ -146,13 +146,11 @@ public class TabTwoActivity extends ListActivity {
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
                 XmlPullParser parser = factory.newPullParser();
-
                 parser.setInput(is, null);
 
                 store = new ArrayList<HashMap<String, Object>>();
-
                 eventType = parser.getEventType();
-                while (eventType != XmlPullParser.END_DOCUMENT) { //최초 title테그안에 쓸데없는 내용이 있어서 추가해줬음.
+                while (eventType != XmlPullParser.END_DOCUMENT) {
                     switch (eventType) {
                         case XmlPullParser.START_TAG:
                             tagName = parser.getName();

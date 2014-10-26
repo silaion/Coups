@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Debug;
 import android.view.KeyEvent;
 import android.widget.TabHost;
 import android.widget.Toast;
-import android.widget.TabHost.TabSpec;
 
 public class Tabview extends TabActivity {
 
