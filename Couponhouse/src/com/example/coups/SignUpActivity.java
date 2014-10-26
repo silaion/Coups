@@ -78,22 +78,19 @@ public class SignUpActivity extends Activity {
 //                    GCMRegistrar.unregister(mContext);
 //                    GCMRegistrar.register(mContext, PROJECT_ID);
 //                }
-
+//
 //                while(true) {
 //                    if(global.start) {
 //                        name = sign_name.getText().toString();
 //                        birth = sign_birth.getText().toString();
 //                        phoneNum = sign_phoneNum.getText().toString();
 //                        savePreferences();
-//
-//                        Intent intent = new Intent(SignUpActivity.this, Tabview.class);
-//                        startActivity(intent);
-//                        break;
-//                    }
-//                }
 
-                Intent intent = new Intent(SignUpActivity.this, Tabview.class);
-                startActivity(intent);
+                        Intent intent = new Intent(SignUpActivity.this, Tabview.class);
+                        startActivity(intent);
+                        //break;
+                    //}
+                //}
             }
         });
 

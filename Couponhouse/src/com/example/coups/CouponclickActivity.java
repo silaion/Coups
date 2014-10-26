@@ -10,19 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 
 public class CouponclickActivity extends Activity {
 
@@ -100,7 +93,8 @@ public class CouponclickActivity extends Activity {
         XmlPullParserFactory factory;
         XmlPullParser parser;
 
-        String url = "http://112.172.217.79:8080/JSP_Server/c_store.jsp";
+        String mAddr = "http://112.172.217.79:8080/JSP_Server/c_store.jsp";
+        //String mAddr = "http://172.30.76.31:8081/gcm_jsp/xmlout.jsp";
         String tagName;
         int eventType;
         boolean inName = false, inAddr = false, inDue_date = false, inCurrent = false, ins_Stamp = false, inTotal = false;
@@ -113,15 +107,8 @@ public class CouponclickActivity extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(url);
-                List nameValuePairs = new ArrayList(2);
-                nameValuePairs.add(new BasicNameValuePair("c_number", global.c_Number));
-                nameValuePairs.add(new BasicNameValuePair("s_number", global.s_Number));
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                // HTTP Post 요청 실행
-                HttpResponse response = httpClient.execute(httpPost);
-                InputStream is = response.getEntity().getContent();
+                URL targetURL = new URL(mAddr);
+                InputStream is = targetURL.openStream();
 
                 factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);

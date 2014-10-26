@@ -1,6 +1,5 @@
 package com.example.coups;
 
-
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,48 +7,45 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BuytwoActivity extends ListActivity {
+public class AlarmActivity extends ListActivity {
 
-    Button payment;
     ArrayList<HashMap<String, Object>> players;
     LayoutInflater inflater;
-    /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.discount);
+        setContentView(R.layout.alarmlist);
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
-
-
-        payment = (Button)findViewById(R.id.payment);
-        payment.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent intent = new Intent(BuytwoActivity.this, PaymentActivity.class);
+        lv.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // When clicked, show a toast with the TextView text
+                Intent intent = new Intent(AlarmActivity.this, AlarmadjustActivity.class);
                 startActivity(intent);
-            }
-        });
+            }});
 
+        //not necessary as ListActivity has an
+        //implicitly defined Layout(with a ListView of course)
+        //setContentView(R.layout.players);   
+
+        //get the LayoutInflater for inflating the customomView
         inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         //these arrays are just the data that 
         //I'll be using to populate the ArrayList
         //You can use our own methods to get the data
-        String names[]={"한경카페 베이글 종류 30% 할인권",};
+        String names[]={"한경카페","안성카페","경기카페",};
 
-        String teams[]={"유효기간 (2014.9.1~2014.12.31)"};
+        String teams[]={"유효기간 (2014.9.1~2014.12.31)","유효기간 (2014.9.1~2014.12.31)","유효기간 (2014.9.1~2014.12.31)"};
 
         players=new ArrayList<HashMap<String,Object>>();
 
@@ -72,7 +68,7 @@ public class BuytwoActivity extends ListActivity {
         }
 
 
-        CustomAdapter adapter=new CustomAdapter(this, R.layout.buylist,players);
+        CustomAdapter adapter=new CustomAdapter(this, R.layout.alarm,players);
 
         //finally,set the adapter to the default ListView
         setListAdapter(adapter);
@@ -107,7 +103,7 @@ public class BuytwoActivity extends ListActivity {
             if(convertView==null)
             {
                 //inflate the custom layout
-                convertView=inflater.inflate(R.layout.buylist, null);
+                convertView=inflater.inflate(R.layout.alarm, null);
                 viewHolder=new ViewHolder();
 
                 //cache the views
@@ -130,8 +126,5 @@ public class BuytwoActivity extends ListActivity {
             //return the view to be displayed
             return convertView;
         }
-    }// TODO Auto-generated method stub
-
-
-
+    }
 }

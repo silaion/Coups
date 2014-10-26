@@ -1519,7 +1519,7 @@ containing a value of this type.
         public static final int discountcoupontab=0x7f030032;
         public static final int discountsell=0x7f030033;
         public static final int favorite=0x7f030034;
-        public static final int existmember =0x7f030035;
+        public static final int existember =0x7f030035;
         public static final int info=0x7f030036;
         public static final int infoclick=0x7f030037;
         public static final int infos=0x7f030038;

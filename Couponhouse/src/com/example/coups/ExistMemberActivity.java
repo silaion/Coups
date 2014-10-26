@@ -35,7 +35,7 @@ public class ExistMemberActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.existmember);
+        setContentView(R.layout.existember);
 
         global = new Global();
 
@@ -72,7 +72,7 @@ public class ExistMemberActivity extends Activity {
                 if (GCMRegistrar.getRegistrationId(mContext).equals("")) {
                     GCMRegistrar.register(mContext, PROJECT_ID);
                 } else {
-                    // 이미 GCM 을 사용하기위해 등록ID를 구해왔음
+                    // 이미 GCM 을 상요하기위해 등록ID를 구해왔음
                     GCMRegistrar.unregister(mContext);
                     GCMRegistrar.register(mContext, PROJECT_ID);
                 }
@@ -81,16 +81,10 @@ public class ExistMemberActivity extends Activity {
                 birth = et_birth.getText().toString();
                 phoneNum = et_phoneNum.getText().toString();
                 savePreferences();
-                Log.d("SharedPreference", name + " " + gender + " " + birth + " " + phoneNum);
 
-//                while(true){
-//                    if(global.start) {
-//                        Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
-//                        startActivity(intent);
-//                    }
-//                }//while
                 Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
                 startActivity(intent);
+                Log.d("SharedPreference", name + " " + gender + " " + birth + " " + phoneNum);
             }
         });
 
