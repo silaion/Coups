@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -112,10 +113,17 @@ public class GCMIntentService extends GCMBaseIntentService {
         param.put("gender", global.gender);
         param.put("birth", global.birth);
         param.put("phoneNum", global.phoneNum);
-        //serverRequest_insert = new ServerRequest("http://112.172.217.79:8080/JSP_Server/add_AppKey.jsp", param, mResHandler, mHandler, arg0);
-        serverRequest_insert = new ServerRequest("http://112.172.217.79:8080/JSP_Server/insert.jsp", param, mResHandler, mHandler, arg0);
-        //serverRequest_insert = new ServerRequest("http://192.168.0.21:8081/gcm_jsp/insert.jsp", param, mResHandler, mHandler, arg0);
-        serverRequest_insert.start();
+        param.put("change", global.change);
+        Log.d("change 값", global.change);
+        if(global.change.equals("1")) {
+            serverRequest_insert = new ServerRequest("http://112.172.217.79:8080/JSP_Server/insert.jsp", param, mResHandler, mHandler, arg0);
+            serverRequest_insert.start();
+            Log.d("insert", "회원가입 진행");
+        }else {
+            serverRequest_insert = new ServerRequest("http://112.172.217.79:8080/JSP_Server/change_info.jsp", param, mResHandler, mHandler, arg0);
+            serverRequest_insert.start();
+            Log.d("change", "기존회원가입 진행");
+        }
     }
 
     /**
@@ -126,13 +134,23 @@ public class GCMIntentService extends GCMBaseIntentService {
         public void handleMessage(Message msg) {
             serverRequest_insert.interrupt();
             String result = msg.getData().getString("result");
+            Log.d("result", result);
             global = new Global();
 
             if (result.equals("success")) {
                 Toast.makeText(mContext, "Coups에 가입 되신것을 환영합니다.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되었습니다.");
-                global.start = true;
-            } else {
+                Intent intent = new Intent(mContext, Tabview.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else if(result.equals("changed")){
+                Toast.makeText(mContext, "고객님의 정보가 성공적으로 수정되었습니다.", Toast.LENGTH_LONG).show();
+                Log.d("regid", "데이터베이스에 regid가 등록되었습니다.");
+                Intent intent = new Intent(mContext, Tabview.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+            else {
                 Toast.makeText(mContext, "중복되는 사용자가 있습니다.\n 이미 가입하셨다면 기존 사용자등록을 이용해주세요.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되지 않았습니다.");
             }
@@ -176,20 +194,35 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context arg0, Intent arg1) {
         // TODO Auto-generated method stub
         gcm_msg = arg1.getExtras().getString("test");
+        Log.d("gcm_msg", gcm_msg);
         if (gcm_msg.startsWith("N_")) {
-            global.c_Number = gcm_msg.substring(2);
+            String c_Number = gcm_msg.substring(2);
+            global.c_Number = c_Number;
+            savePreferences(c_Number);
             Log.d("Customer Number", String.valueOf(global.c_Number));
-        } else {
-
+        } else if(gcm_msg.equals("Add stamp +1")){
+            //long[] pattern = {0, 3000, 100, 3000,100};
+            try {
+                //gcm_msg = URLDecoder.decode(gcm_msg, "EUC-KR");
+                Vibrator vibrator =
+                        (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
+                //vibrator.vibrate(pattern, -1);
+                vibrator.vibrate(3000);
+                setNotification(arg0, "도장쿠폰이 추가되었습니다.");
+            } catch (Exception e) {
+                Log.e("GCM_onMessage", "failed");
+            }
+            Log.d("test", "메시지가 왔습니다 : " + gcm_msg);
+            showMessage();
+        } else{
             long[] pattern = {0, 3000, 100, 3000,100};
-
             try {
                 gcm_msg = URLDecoder.decode(gcm_msg, "EUC-KR");
                 Vibrator vibrator =
                         (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(pattern, -1);
                 //vibrator.vibrate(3000);
-                setNotification(arg0, gcm_msg);
+                setNotification(arg0, "도장쿠폰이 추가되었습니다.");
             } catch (Exception e) {
                 Log.e("GCM_onMessage", "failed");
             }
@@ -247,4 +280,14 @@ public class GCMIntentService extends GCMBaseIntentService {
             Log.d("GCM_handler", "수신 메시지 : " + gcm_msg);
         }
     };
+    private void savePreferences(String c_Number){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("Name", global.name);
+        editor.putString("Gender", global.gender);
+        editor.putString("PhoneNumber", global.phoneNum);
+        editor.putString("Birthday", global.birth);
+        editor.putString("c_Number", c_Number);
+        editor.commit();
+    }
 }

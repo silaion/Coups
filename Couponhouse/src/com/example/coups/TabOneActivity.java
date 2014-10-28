@@ -1,8 +1,11 @@
 package com.example.coups;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 public class TabOneActivity extends Activity {
@@ -12,11 +15,14 @@ public class TabOneActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.tabone);
+        setContentView(R.layout.tabone);
+        c_Number = (TextView) findViewById(R.id.tab_c_Number);
+
 	    // TODO Auto-generated method stub
         global = new Global();
+        global.actList.add(this);
 
-        c_Number = (TextView) findViewById(R.id.tab_c_Number);
+
         adapterThread = new AdapterThread();
         adapterThread.execute(null, null, null);
 	}
@@ -27,5 +33,30 @@ public class TabOneActivity extends Activity {
             c_Number.setText("회원번호 : " + global.c_Number);
             return null;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                new AlertDialog.Builder(this)
+                        .setTitle("프로그램 종료")
+                        .setMessage("프로그램을 종료 하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                for(int i = 0; i < global.actList.size() ; i++){
+                                    global.actList.get(i).finish();
+                                }
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("아니오", null)
+                        .show();
+                break;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

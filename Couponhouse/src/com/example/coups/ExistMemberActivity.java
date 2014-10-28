@@ -3,7 +3,6 @@ package com.example.coups;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,14 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
 import com.google.android.gcm.GCMRegistrar;
 
 public class ExistMemberActivity extends Activity {
 
     Button register;
     Button before;
-    EditText et_name, et_phoneNum, et_birth;
+    EditText et_name, et_phoneNum, et_birth, et_change;
     RadioGroup rGroup;
     RadioButton rb_male, rb_female;
 
@@ -26,9 +24,7 @@ public class ExistMemberActivity extends Activity {
 
     Global global;
 
-    Sign_up_in signui;
-
-    String name, gender = "1", phoneNum, birth;
+    String name, gender = "남", phoneNum, birth, change;
 
     public static String PROJECT_ID = "840576167931";
     /** Called when the activity is first created. */
@@ -38,10 +34,14 @@ public class ExistMemberActivity extends Activity {
         setContentView(R.layout.existmember);
 
         global = new Global();
+        global.actList.add(this);
+        global.change = "";
+
 
         et_name = (EditText)findViewById(R.id.editText4);
         et_birth = (EditText)findViewById(R.id.editText1);
         et_phoneNum = (EditText)findViewById(R.id.editText2);
+        et_change = (EditText)findViewById(R.id.editText3);
 
         rGroup = (RadioGroup)findViewById(R.id.radioGroup);
         rb_male = (RadioButton)findViewById(R.id.rd1);
@@ -54,9 +54,9 @@ public class ExistMemberActivity extends Activity {
                 // TODO Auto-generated method stub
                 switch(checkedId){
                     case R.id.rd1:
-                        gender = "1";
+                        gender = "남";
                     case R.id.rd2:
-                        gender = "2";
+                        gender = "여";
                 }
             }
         });
@@ -66,7 +66,18 @@ public class ExistMemberActivity extends Activity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+                name = et_name.getText().toString();
+                birth = et_birth.getText().toString();
+                phoneNum = et_phoneNum.getText().toString();
+                change = et_change.getText().toString();
+                Log.d("SharedPreference", name + " " + gender + " " + birth + " " + phoneNum);
+
+                global.name = name;
+                global.gender = gender;
+                global.birth = birth;
+                global.phoneNum = phoneNum;
+                global.change = change;
+
                 GCMRegistrar.checkDevice(mContext);
                 GCMRegistrar.checkManifest(mContext);
                 if (GCMRegistrar.getRegistrationId(mContext).equals("")) {
@@ -77,20 +88,10 @@ public class ExistMemberActivity extends Activity {
                     GCMRegistrar.register(mContext, PROJECT_ID);
                 }
 
-                name = et_name.getText().toString();
-                birth = et_birth.getText().toString();
-                phoneNum = et_phoneNum.getText().toString();
-                savePreferences();
-                Log.d("SharedPreference", name + " " + gender + " " + birth + " " + phoneNum);
 
-//                while(true){
-//                    if(global.start) {
-//                        Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
-//                        startActivity(intent);
-//                    }
-//                }//while
-                Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
-                startActivity(intent);
+
+//                Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
+//                startActivity(intent);
             }
         });
 
@@ -104,19 +105,5 @@ public class ExistMemberActivity extends Activity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void savePreferences(){
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("Name", name);
-        editor.putString("Gender", gender);
-        editor.putString("PhoneNumber", phoneNum);
-        editor.putString("Birthday", birth);
-        global.name = name;
-        global.gender = gender;
-        global.phoneNum = phoneNum;
-        global.birth = birth;
-        editor.commit();
     }
 }

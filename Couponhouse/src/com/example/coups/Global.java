@@ -10,9 +10,11 @@ import android.app.Application;
  */
 public class Global extends Application{
     public boolean start = false;
-    static String name, gender, phoneNum, birth;
-    static String c_Number = "1";
+    static String name, gender, phoneNum, birth, change = "1";
+    static String c_Number;
     static String s_Number;
     static String imsi_string1, imsi_string2;
-    static ArrayList<Activity> actList;
+    static ArrayList<Activity> actList = new ArrayList<Activity>();
+
+    public Global(){}
 }

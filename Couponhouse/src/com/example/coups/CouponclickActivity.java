@@ -107,7 +107,7 @@ public class CouponclickActivity extends Activity {
 
         @Override
         protected void onPreExecute() {
-            c_Number.setText(String.valueOf(global.c_Number));
+            c_Number.setText("회원번호 : " + String.valueOf(global.c_Number));
         }
 
         @Override

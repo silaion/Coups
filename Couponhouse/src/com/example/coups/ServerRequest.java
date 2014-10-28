@@ -81,7 +81,7 @@ public class ServerRequest extends Thread{
             Log.d("test", "요청 실패");
             Log.d("test", e.toString());
             Toast.makeText(context, "회원가입에 실패하였습니다. 데이터나 와이파이 연결을 확인하시고 다시 시도해주세요.", Toast.LENGTH_LONG).show();
-
+            e.printStackTrace();
             // TODO: handle exception
         }
     }

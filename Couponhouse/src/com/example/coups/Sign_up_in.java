@@ -169,7 +169,7 @@ public class Sign_up_in {
                 DocumentBuilder documentBuilder = factory.newDocumentBuilder();
                 //문자열을 InputStream으로 변환
                 InputStream is = new ByteArrayInputStream(xml.getBytes());
-                //InputStream의 내용을 xml문서로 변환
+                //InputStream의 내용을 xml문서로    변환
                 Document doc = documentBuilder.parse(is);
 
                 //루트 태그 찾아오기

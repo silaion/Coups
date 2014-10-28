@@ -1,13 +1,16 @@
 package com.example.coups;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +78,7 @@ public class TabThrActivity extends ListActivity {
 
         store=new ArrayList<HashMap<String,Object>>();
         httpConnect = new HttpConnect();
+
         httpConnect.execute(null, null, null);
 
         while(true){
@@ -145,9 +149,6 @@ public class TabThrActivity extends ListActivity {
                 // HTTP Post 요청 실행
                 HttpResponse response = httpClient.execute(httpPost);
                 InputStream is = response.getEntity().getContent();
-//
-//                URL targetURL = new URL(url);
-//                InputStream is = targetURL.openStream();
 
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
@@ -265,5 +266,30 @@ public class TabThrActivity extends ListActivity {
             //return the view to be displayed
             return convertView;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch(keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                new AlertDialog.Builder(this)
+                        .setTitle("프로그램 종료")
+                        .setMessage("프로그램을 종료 하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                for(int i = 0; i < global.actList.size() ; i++){
+                                    global.actList.get(i).finish();
+                                }
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("아니오", null)
+                        .show();
+                break;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
