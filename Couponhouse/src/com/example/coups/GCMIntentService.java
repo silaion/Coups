@@ -151,8 +151,7 @@ public class GCMIntentService extends GCMBaseIntentService {
                 startActivity(intent);
             }
             else {
-                Toast.makeText(mContext, "중복되는 사용자가 있습니다.\n 이미 가입하셨다면 기존 사용자등록을 이용해주세요.", Toast.LENGTH_LONG).show();
-                Log.d("regid", "데이터베이스에 regid가 등록되지 않았습니다.");
+                Toast.makeText(mContext, "입력하신 정보가 중복 되었거나, 잘못 되었습니다.\n 다시 확인해주시기 바랍니다.", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -238,9 +237,9 @@ public class GCMIntentService extends GCMBaseIntentService {
                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification notification = new Notification(R.drawable.icon, message, when);
             String title = context.getString(R.string.app_name);
-            Intent notificationIntent = new Intent(context, MainActivity.class);
+            Intent notificationIntent = new Intent(context, Tabview.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+            PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             notification.setLatestEventInfo(context, title, message, intent);
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
             notificationManager.notify(0, notification);

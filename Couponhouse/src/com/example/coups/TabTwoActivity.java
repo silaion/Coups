@@ -136,7 +136,6 @@ public class TabTwoActivity extends ListActivity {
         HashMap<String, Object> temp = new HashMap<String, Object>();
 
         String mAddr = "http://112.172.217.79:8080/JSP_Server/xmlout.jsp";
-        //String mAddr = "http://172.30.76.31:8081/gcm_jsp/xmlout.jsp";
         String tagName;
         int eventType;
         boolean flag = false;

@@ -40,8 +40,6 @@ public class TabThrActivity extends ListActivity {
     HttpConnect httpConnect;
     /** Called when the activity is first created. */
     @Override
-
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.adjust);
@@ -78,7 +76,6 @@ public class TabThrActivity extends ListActivity {
 
         store=new ArrayList<HashMap<String,Object>>();
         httpConnect = new HttpConnect();
-
         httpConnect.execute(null, null, null);
 
         while(true){
@@ -92,7 +89,7 @@ public class TabThrActivity extends ListActivity {
         }//while
 
         searchResults=new ArrayList<HashMap<String,Object>>(store);
-        final CustomAdapter adapter = new CustomAdapter(this, R.layout.favorite, searchResults);
+        final CustomAdapter adapter = new CustomAdapter(this, R.layout.tabthr, searchResults);
         stampListView.setAdapter(adapter);
         searchBox.addTextChangedListener(new TextWatcher() {
 

@@ -6,38 +6,60 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TabOneActivity extends Activity {
     Global global;
     TextView c_Number;
     AdapterThread adapterThread;
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.tabone);
         c_Number = (TextView) findViewById(R.id.tab_c_Number);
 
-	    // TODO Auto-generated method stub
+        // TODO Auto-generated method stub
         global = new Global();
         global.actList.add(this);
 
 
         adapterThread = new AdapterThread();
         adapterThread.execute(null, null, null);
-	}
+    }
 
-    private class AdapterThread extends AsyncTask<Void, Void, Void>{
+    private class AdapterThread extends AsyncTask<Void, Void, Void> {
+        ProgressBar progressBar;
+        @Override
+        protected void onPreExecute(){
+//            ProgressDialog progressDialog = new ProgressDialog(TabOneActivity.this);
+//            progressDialog.show();
+            progressBar = new ProgressBar(TabOneActivity.this);
+        }
+
         @Override
         protected Void doInBackground(Void... params) {
+            while(true) {
+                if (!global.c_Number.equals("")) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    return null;
+                }
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void params){
+            progressBar.setVisibility(View.INVISIBLE);
             c_Number.setText("회원번호 : " + global.c_Number);
-            return null;
         }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch(keyCode) {
+        switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 new AlertDialog.Builder(this)
                         .setTitle("프로그램 종료")
@@ -45,7 +67,7 @@ public class TabOneActivity extends Activity {
                         .setPositiveButton("예", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                for(int i = 0; i < global.actList.size() ; i++){
+                                for (int i = 0; i < global.actList.size(); i++) {
                                     global.actList.get(i).finish();
                                 }
                                 finish();

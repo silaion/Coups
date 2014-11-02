@@ -6,21 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
-import com.facebook.Session;
-import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.FacebookDialog;
 
 public class InfoclickActivity extends FragmentActivity {
     private UiLifecycleHelper uiHelper;
     private Button facebook, twit, kakao;
-
-    private Session.StatusCallback callback = new Session.StatusCallback() {
-        @Override
-        public void call(Session session, SessionState state, Exception exception) {
-            //onSessionStateChange(session, state, exception);
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -87,11 +87,6 @@ public class ExistMemberActivity extends Activity {
                     GCMRegistrar.unregister(mContext);
                     GCMRegistrar.register(mContext, PROJECT_ID);
                 }
-
-
-
-//                Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
-//                startActivity(intent);
             }
         });
 

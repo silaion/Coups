@@ -3,13 +3,13 @@ package com.example.coups;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import com.google.android.gcm.GCMRegistrar;
 
 public class SignUpActivity extends Activity {
 
@@ -69,17 +69,17 @@ public class SignUpActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                GCMRegistrar.checkDevice(mContext);
-                GCMRegistrar.checkManifest(mContext);
-                if (GCMRegistrar.getRegistrationId(mContext).equals("")) {
-                    GCMRegistrar.register(mContext, PROJECT_ID);
-
-                } else {
-                    // 이미 GCM 을 상요하기위해 등록ID를 구해왔음
-                    GCMRegistrar.unregister(mContext);
-                    GCMRegistrar.register(mContext, PROJECT_ID);
-                }
+//                // TODO Auto-generated method stub
+//                GCMRegistrar.checkDevice(mContext);
+//                GCMRegistrar.checkManifest(mContext);
+//                if (GCMRegistrar.getRegistrationId(mContext).equals("")) {
+//                    GCMRegistrar.register(mContext, PROJECT_ID);
+//
+//                } else {
+//                    // 이미 GCM 을 상요하기위해 등록ID를 구해왔음
+//                    GCMRegistrar.unregister(mContext);
+//                    GCMRegistrar.register(mContext, PROJECT_ID);
+//                }
 
                 name = sign_name.getText().toString();
                 birth = sign_birth.getText().toString();
@@ -88,6 +88,8 @@ public class SignUpActivity extends Activity {
                 global.birth = birth;
                 global.phoneNum = phoneNum;
                 global.gender = gender;
+
+                savePreferences("1");
 
                 Intent intent = new Intent(SignUpActivity.this, Tabview.class);
                 startActivity(intent);
@@ -104,5 +106,16 @@ public class SignUpActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void savePreferences(String c_Number){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("Name", global.name);
+        editor.putString("Gender", global.gender);
+        editor.putString("PhoneNumber", global.phoneNum);
+        editor.putString("Birthday", global.birth);
+        editor.putString("c_Number", c_Number);
+        editor.commit();
     }
 }

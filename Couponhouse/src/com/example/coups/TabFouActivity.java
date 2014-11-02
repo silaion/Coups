@@ -74,19 +74,11 @@ public class TabFouActivity extends ListActivity {
 
         inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        //these arrays are just the data that 
-        //I'll be using to populate the ArrayList
-        //You can use our own methods to get the data
-        String names[]={"한경카페 베이글 10% 할인권","안성카페 아메리카노 1000원 할인권","안성카페 모든 음료 10% 할인권",};
-
-        String teams[]={"유효기간 (2014.9.1~2014.12.31)","유효기간 (2014.9.1~2014.12.31)","유효기간 (2014.9.1~2014.12.31)"};
-
         discoupon=new ArrayList<HashMap<String,Object>>();
 
 
         HttpConnect httpConnect = new HttpConnect();
         httpConnect.execute(null, null, null);
-
 
         while(true){
             try{
@@ -103,10 +95,8 @@ public class TabFouActivity extends ListActivity {
 
         //finally,set the adapter to the default ListView
         setListAdapter(adapter);
-
-
-
         // TODO Auto-generated method stub
+
     }
     private class HttpConnect extends AsyncTask<Void, Void, Void> {
         String url = "http://112.172.217.79:8080/JSP_Server/c_getDiscoup.jsp";
@@ -122,6 +112,8 @@ public class TabFouActivity extends ListActivity {
 
             try {
                 HttpClient httpClient = new DefaultHttpClient();
+                httpClient.getParams().setParameter("http.protocol.expect-continue", false);
+                httpClient.getParams().setParameter("http.connection.timeout", 5000);
                 HttpPost httpPost = new HttpPost(url);
                 List nameValuePairs = new ArrayList(1);
                 nameValuePairs.add(new BasicNameValuePair("c_number", global.c_Number));

@@ -12,5 +12,4 @@ public class MapActivity extends Activity {
 	    setContentView(R.layout.map);
 	    // TODO Auto-generated method stub
 	}
-
 }

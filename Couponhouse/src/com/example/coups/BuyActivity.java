@@ -29,14 +29,13 @@ import java.util.List;
 public class BuyActivity extends ListActivity {
     ArrayList<HashMap<String, Object>> searchResults;
     ArrayList<HashMap<String, Object>> Dis_Coupon;
+    static ArrayList<HashMap<String, Object>> checked_coupon;
     LayoutInflater inflater;
     Button buy;
     Global global = new Global();
     HttpConnect httpConnect;
-    CustomAdapter customAdapter;
 
     @Override
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buy);
@@ -78,6 +77,7 @@ public class BuyActivity extends ListActivity {
         }//while
 
         searchResults = new ArrayList<HashMap<String, Object>>(Dis_Coupon);
+        checked_coupon = new ArrayList<HashMap<String, Object>>();
         final CustomAdapter adapter = new CustomAdapter(this, R.layout.discountsell, searchResults);
         Dis_CouponListView.setAdapter(adapter);
         searchBox.addTextChangedListener(new TextWatcher() {
@@ -91,7 +91,7 @@ public class BuyActivity extends ListActivity {
                 searchResults.clear();
 
                 for (int i = 0; i < Dis_Coupon.size(); i++) {
-                    String storeName = Dis_Coupon.get(i).get("Name").toString();
+                    String storeName = Dis_Coupon.get(i).get("S_Name").toString();
                     if (textLength <= storeName.length()) {
                         //compare the String in EditText with Names in the ArrayList
                         if (searchString.equalsIgnoreCase(storeName.substring(0, textLength)))
@@ -121,6 +121,7 @@ public class BuyActivity extends ListActivity {
         int eventType;
         boolean flag = false;
         boolean inS_Name = false, inC_Name = false, inPrice = false, inState = false, inDisc = false;
+        boolean inS_Number = false, inC_Number = false;
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -162,6 +163,10 @@ public class BuyActivity extends ListActivity {
                                 inState = true;
                             } else if (tagName.equals("Disc_Number")) {
                                 inDisc = true;
+                            } else if(tagName.equals("S_Number")){
+                                inS_Number = true;
+                            } else if(tagName.equals("C_Number")){
+                                inC_Number = true;
                             }
                             break;
                         case XmlPullParser.TEXT:
@@ -175,6 +180,10 @@ public class BuyActivity extends ListActivity {
                                 temp.put("State", parser.getText());
                             } else if (tagName.equals("Disc_Number") && inDisc) {
                                 temp.put("Disc_Number", parser.getText());
+                            } else if(tagName.equals("S_Number") && inS_Number){
+                                temp.put("S_Number", parser.getText());
+                            } else if(tagName.equals("C_Number") && inC_Number){
+                                temp.put("C_Number", parser.getText());
                             }
                             break;
                         case XmlPullParser.END_TAG:
@@ -191,6 +200,10 @@ public class BuyActivity extends ListActivity {
                                 inState = false;
                             } else if (tagName.equals("Disc_Number")) {
                                 inDisc = false;
+                            } else if(tagName.equals("S_Number")){
+                                inS_Number = false;
+                            } else if(tagName.equals("C_Number")){
+                                inC_Number = false;
                             }
                             break;
                     }
@@ -208,20 +221,24 @@ public class BuyActivity extends ListActivity {
 
     private class CustomAdapter extends ArrayAdapter<HashMap<String, Object>> {
 
+        HashMap<String, Object> checked;
+
         public CustomAdapter(Context context, int textViewResourceId, ArrayList<HashMap<String, Object>> Strings) {
             //let android do the initializing :)
             super(context, textViewResourceId, Strings);
+
         }
 
         //class for caching the views in a row
         private class ViewHolder {
             TextView Disc_Name, Disc_Price, Disc_had;
+            CheckBox Disc_Check;
         }
 
         ViewHolder viewHolder;
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 //inflate the custom layout
                 convertView = inflater.inflate(R.layout.discountsell, null);
@@ -230,7 +247,8 @@ public class BuyActivity extends ListActivity {
                 //cache the views
                 viewHolder.Disc_Name = (TextView) convertView.findViewById(R.id.Disc_Name);
                 viewHolder.Disc_Price = (TextView) convertView.findViewById(R.id.Disc_Price);
-                //viewHolder.Disc_had = (TextView) convertView.findViewById(R.id.Disc_had);
+                viewHolder.Disc_had = (TextView) convertView.findViewById(R.id.Disc_have);
+                viewHolder.Disc_Check = (CheckBox) convertView.findViewById(R.id.check);
 
                 //link the cached views to the convertview
                 convertView.setTag(viewHolder);
@@ -240,6 +258,42 @@ public class BuyActivity extends ListActivity {
             //set the data to be displayed
             viewHolder.Disc_Name.setText(Dis_Coupon.get(position).get("S_Name").toString() + " " + Dis_Coupon.get(position).get("C_Name").toString());
             viewHolder.Disc_Price.setText(Dis_Coupon.get(position).get("Price").toString() + " 원");
+            viewHolder.Disc_had.setText(Dis_Coupon.get(position).get("State").toString());
+            if(viewHolder.Disc_Check != null) {
+                viewHolder.Disc_Check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            checked = new HashMap<String, Object>();
+                            checked.put("Counter", position);
+                            checked.put("S_Number", Dis_Coupon.get(position).get("S_Number"));
+                            checked.put("S_Name", Dis_Coupon.get(position).get("S_Name"));
+                            checked.put("C_Name", Dis_Coupon.get(position).get("C_Name"));
+                            checked.put("Price", Dis_Coupon.get(position).get("Price"));
+                            checked.put("Disc_Number", Dis_Coupon.get(position).get("Disc_Number"));
+                            checked.put("State", Dis_Coupon.get(position).get("State"));
+                            checked_coupon.add(checked);
+                        } else {
+                            for(int i = 0 ; i < checked_coupon.size() ; i++){
+                                int count = Integer.parseInt(checked_coupon.get(i).get("Counter").toString());
+                                if(count == position) {
+                                    checked_coupon.remove(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
+
+                for(int i = 0; i < getCount() ; i++){
+                    if(Dis_Coupon.get(i) != null){
+                        viewHolder.Disc_Check.setChecked(false);
+                        break;
+                    } else{
+                        viewHolder.Disc_Check.setChecked(true);
+                    }
+                }
+            }
             //return the view to be displayed
             return convertView;
         }

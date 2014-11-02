@@ -24,7 +24,6 @@ import java.util.HashMap;
 
 public class InfoActivity extends ListActivity {
 
-    //the ArrayList that will hold the data to be displayed in the ListView
     ArrayList<HashMap<String, Object>> searchResults;
     ArrayList<HashMap<String, Object>> store;
     LayoutInflater inflater;
@@ -36,9 +35,10 @@ public class InfoActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.infos);
-        final EditText searchBox=(EditText) findViewById(R.id.searchBox);
 
+        final EditText searchBox=(EditText) findViewById(R.id.searchBox);
         ListView storeListView=(ListView) findViewById(android.R.id.list);
+
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
         lv.setOnItemClickListener(new OnItemClickListener() {
@@ -47,10 +47,6 @@ public class InfoActivity extends ListActivity {
                 Intent intent = new Intent(InfoActivity.this, InfoclickActivity.class);
                 startActivity(intent);
             }});
-
-        //not necessary as ListActivity has an
-        //implicitly defined Layout(with a ListView of course)
-        //setContentView(R.layout.store);
 
         //get the LayoutInflater for inflating the customomView
         inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -73,6 +69,7 @@ public class InfoActivity extends ListActivity {
         final CustomAdatper adapter = new CustomAdatper(this, R.layout.favorite, searchResults);
         storeListView.setAdapter(adapter);
         searchBox.addTextChangedListener(new TextWatcher() {
+
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //get the text in the EditText
                 String searchString=searchBox.getText().toString();
@@ -90,16 +87,18 @@ public class InfoActivity extends ListActivity {
                             searchResults.add(store.get(i));
                     }
                 }
+
                 adapter.notifyDataSetChanged();
             }
 
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count,int after) {
             }
 
 
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub
+
             }
         });
     }
@@ -131,8 +130,8 @@ public class InfoActivity extends ListActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            viewHolder.name.setText(store.get(position).get("Name").toString());
-            viewHolder.addr.setText(store.get(position).get("Addr").toString());
+            viewHolder.name.setText(searchResults.get(position).get("Name").toString());
+            viewHolder.addr.setText(searchResults.get(position).get("Addr").toString());
 
             return convertView;
         }
