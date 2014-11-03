@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/../facebook/facebook.iml" filepath="$PROJECT_DIR$/../facebook/facebook.iml" />
       <module fileurl="file://$PROJECT_DIR$/../google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/../google-play-services_lib/google-play-services_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/../kakao/kakao.iml" filepath="$PROJECT_DIR$/../kakao/kakao.iml" />
-      <module fileurl="file://$USER_HOME$/SkyDrive/workspace/myapp/myapp.iml" filepath="$USER_HOME$/SkyDrive/workspace/myapp/myapp.iml" />
     </modules>
   </component>
 </project>

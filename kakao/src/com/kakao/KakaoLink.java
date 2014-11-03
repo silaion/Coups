@@ -82,6 +82,7 @@ public class KakaoLink {
      */
     public void sendMessage(final String linkMessage, final Context context) throws KakaoParameterException {
         final Intent intent = TalkProtocol.createKakakoTalkLinkIntent(context, linkMessage);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (intent == null) {
             //alert install dialog
             new AlertDialog.Builder(context)

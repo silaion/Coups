@@ -55,8 +55,6 @@ public class TabFivActivity extends Activity implements View.OnClickListener {
                             // TODO Auto-generated method stub
                             HttpConnect httpConnect = new HttpConnect();
                             httpConnect.execute(null, null, null);
-//                            Intent intent = new Intent(TabFivActivity.this, MainActivity.class);
-//                            startActivity(intent);
                         }
                     })
                     .setNegativeButton("취소", null).show();

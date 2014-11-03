@@ -105,7 +105,6 @@ public class BuyActivity extends ListActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
-
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub

@@ -3,6 +3,7 @@ package com.example.coups;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,11 +53,12 @@ public class LeaveActivity extends Activity
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             // TODO Auto-generated method stub
-                            HttpConnect httpConnect = new HttpConnect();
-                            httpConnect.execute(null, null, null);
+//                            HttpConnect httpConnect = new HttpConnect();
+//                            httpConnect.execute(null, null, null);
+                            removePreferences();
 
-//                            Intent intent = new Intent(LeaveActivity.this, MainActivity.class);
-//                            startActivity(intent);
+                            Intent intent = new Intent(LeaveActivity.this, MainActivity.class);
+                            startActivity(intent);
                         }
                     })
                     .setNegativeButton("취소", null).show();

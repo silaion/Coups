@@ -36,7 +36,7 @@ public class InfoclickActivity extends FragmentActivity {
         twit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent it = new Intent(InfoclickActivity.this, TwitterLoad.class);
+                Intent it = new Intent(getBaseContext(), TwitterLoad.class);
                 it.putExtra("url", "https://play.google.com/store/apps/details?id=Coups");
                 it.putExtra("msg", "Coupon House");
                 startActivity(it);
@@ -47,8 +47,8 @@ public class InfoclickActivity extends FragmentActivity {
         kakao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Context c = getApplicationContext();
-                Kakaolink kakaolink = new Kakaolink(c);
+                Context c = getBaseContext();
+                Kakaolink kakaolink = new Kakaolink(getBaseContext());
                 kakaolink.sendKakaoTalkLink();
             }
         });

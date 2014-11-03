@@ -19,6 +19,7 @@
     <orderEntry type="module" module-name="kakao" />
     <orderEntry type="module" module-name="facebook" />
     <orderEntry type="library" name="libs1" level="project" />
+    <orderEntry type="library" name="google-play-services" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

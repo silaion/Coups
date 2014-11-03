@@ -2,6 +2,7 @@ package com.example.coups;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import com.kakao.*;
 
 /**
@@ -12,15 +13,15 @@ public class Kakaolink {
     private final String imageSrc = "http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg";
     private KakaoLink kakaoLink;
     private KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder;
-    private Context ct;
+    private Context c;
+    private Intent i;
 
     public Kakaolink(Context c){
-        ct = c;
+        this.c = c;
     }
     public void sendKakaoTalkLink() {
         try {
-            kakaoLink = KakaoLink.getKakaoLink(ct);
-            //kakaoLink = KakaoLink.getKakaoLink(getApplicationContext());
+            kakaoLink = KakaoLink.getKakaoLink(c);
             kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
 
             kakaoTalkLinkMessageBuilder.addText("Coups");
@@ -38,14 +39,15 @@ public class Kakaolink {
             kakaoTalkLinkMessageBuilder.addAppButton("앱으로 이동");
 
             //kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder.build(), this);
-            kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder.build(), ct);
+            Intent intent = new Intent(c, InfoclickActivity.class);
+            kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder.build(), c);
         } catch (KakaoParameterException e) {
             alert(e.getMessage());
         }
     }
 
     private void alert(String message) {
-        new AlertDialog.Builder(ct)
+        new AlertDialog.Builder(c)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle(R.string.app_name)
                 .setMessage(message)

@@ -2,6 +2,7 @@ package com.example.coups;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,18 +34,20 @@ public class TabOneActivity extends Activity {
 
     private class AdapterThread extends AsyncTask<Void, Void, Void> {
         ProgressBar progressBar;
+        ProgressDialog progressDialog;
         @Override
         protected void onPreExecute(){
-//            ProgressDialog progressDialog = new ProgressDialog(TabOneActivity.this);
-//            progressDialog.show();
+            progressDialog = new ProgressDialog(TabOneActivity.this);
+            progressDialog.setMessage("잠시만 기다려주세요");
+            progressDialog.show();
             progressBar = new ProgressBar(TabOneActivity.this);
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             while(true) {
+                progressBar.setVisibility(View.VISIBLE);
                 if (!global.c_Number.equals("")) {
-                    progressBar.setVisibility(View.VISIBLE);
                     return null;
                 }
             }
@@ -53,6 +56,7 @@ public class TabOneActivity extends Activity {
         @Override
         protected void onPostExecute(Void params){
             progressBar.setVisibility(View.INVISIBLE);
+            progressDialog.cancel();
             c_Number.setText("회원번호 : " + global.c_Number);
         }
     }

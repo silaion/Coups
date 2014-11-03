@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="21" />
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
     
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -15,7 +16,14 @@
     <uses-permission android:name="com.example.coups.permission.C2D_MESSAGE"/>	 
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="com.example.coups.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="com.google.android.peoviders.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 	<permission android:name="com.example.coups.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <permission android:name="com.example.coups.permission.MAPS_RECEIVE"
+            android:protectionLevel="signature"/>
 
     <application 
         android:icon="@drawable/ic_launcher" 
@@ -31,7 +39,10 @@
 			</intent-filter>
 		</receiver>
 		<service android:name=".GCMIntentService"></service>
-		<service android:name=".VibrateService"></service>
+        <meta-data android:name="com.google.android.maps.v2.API_KEY"
+                   android:value="AIzaSyDG8OiN7sZCPehkkFomeI2Yt_F5oP79mtA"/>
+        <meta-data android:name="com.google.android.gms.version"
+                   android:value="@integer/google_play_services_version"/>
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data
                 android:name="com.kakao.sdk.AppKey"
@@ -57,13 +68,6 @@
 		<activity android:name=".SignUpActivity"
 		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
-        
-		<activity android:name="SecondActivity"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-		    
-		</activity>
-		<activity android:name="AlarmActivity"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
 		<activity android:name="LeaveActivity"
 		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
 		<activity android:name="PresentActivity"
@@ -90,8 +94,6 @@
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="DisclickActivity"
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name="DiscountActivity"
-		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="CoDelActivity"
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="SnsActivity"
@@ -106,8 +108,6 @@
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="PaymentActivity"
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name="AlarmadjustActivity"
-		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".TwitterLoad">
 		     <intent-filter>
                  <action android:name="android.intent.action.VIEW" />
@@ -117,14 +117,7 @@
              </intent-filter>
 		</activity>
 		<activity android:name="CouponBenefitActivity"
-          android:theme="@android:style/Theme.NoTitleBar"></activity> 
-		
-		<activity android:name=".widget.TabOneActivity" /> 
-		<activity android:name=".widget.TabTwoActivity" />
-		<activity android:name=".widget.TabThrActivity" /> 
-		<activity android:name=".widget.TabFouActivity" />
-		<activity android:name=".widget.TabFivActivity" /> 
-				
+          android:theme="@android:style/Theme.NoTitleBar"></activity>
     </application>
 
 </manifest>

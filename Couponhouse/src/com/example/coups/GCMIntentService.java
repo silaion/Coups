@@ -136,7 +136,6 @@ public class GCMIntentService extends GCMBaseIntentService {
             String result = msg.getData().getString("result");
             Log.d("result", result);
             global = new Global();
-
             if (result.equals("success")) {
                 Toast.makeText(mContext, "Coups에 가입 되신것을 환영합니다.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되었습니다.");
@@ -199,8 +198,10 @@ public class GCMIntentService extends GCMBaseIntentService {
             global.c_Number = c_Number;
             savePreferences(c_Number);
             Log.d("Customer Number", String.valueOf(global.c_Number));
-        } else if(gcm_msg.equals("Add stamp +1")){
-            //long[] pattern = {0, 3000, 100, 3000,100};
+        } else if(gcm_msg.startsWith("SAdd_")){
+            String s_Number = gcm_msg.substring(2);
+            global.s_Number = s_Number;
+            Log.d("Store Number", String.valueOf(global.s_Number));
             try {
                 //gcm_msg = URLDecoder.decode(gcm_msg, "EUC-KR");
                 Vibrator vibrator =
@@ -237,9 +238,9 @@ public class GCMIntentService extends GCMBaseIntentService {
                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification notification = new Notification(R.drawable.icon, message, when);
             String title = context.getString(R.string.app_name);
-            Intent notificationIntent = new Intent(context, Tabview.class);
+            Intent notificationIntent = new Intent(context, CouponclickActivity.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             notification.setLatestEventInfo(context, title, message, intent);
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
             notificationManager.notify(0, notification);

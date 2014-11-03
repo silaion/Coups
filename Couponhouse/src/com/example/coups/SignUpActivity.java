@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import com.google.android.gcm.GCMRegistrar;
 
 public class SignUpActivity extends Activity {
 
@@ -19,12 +20,9 @@ public class SignUpActivity extends Activity {
     RadioGroup sign_rGroup;
     RadioButton sign_rb_male, sign_rb_female;
 
-    static Context signup_mContext;
     public static String PROJECT_ID = "840576167931";
 
     static Context mContext;
-
-    Sign_up_in signui;
     String name, gender = "남", phoneNum, birth;
 
     Global global;
@@ -69,17 +67,17 @@ public class SignUpActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-//                // TODO Auto-generated method stub
-//                GCMRegistrar.checkDevice(mContext);
-//                GCMRegistrar.checkManifest(mContext);
-//                if (GCMRegistrar.getRegistrationId(mContext).equals("")) {
-//                    GCMRegistrar.register(mContext, PROJECT_ID);
-//
-//                } else {
-//                    // 이미 GCM 을 상요하기위해 등록ID를 구해왔음
-//                    GCMRegistrar.unregister(mContext);
-//                    GCMRegistrar.register(mContext, PROJECT_ID);
-//                }
+                // TODO Auto-generated method stub
+                GCMRegistrar.checkDevice(mContext);
+                GCMRegistrar.checkManifest(mContext);
+                if (GCMRegistrar.getRegistrationId(mContext).equals("")) {
+                    GCMRegistrar.register(mContext, PROJECT_ID);
+
+                } else {
+                    // 이미 GCM 을 상요하기위해 등록ID를 구해왔음
+                    GCMRegistrar.unregister(mContext);
+                    GCMRegistrar.register(mContext, PROJECT_ID);
+                }
 
                 name = sign_name.getText().toString();
                 birth = sign_birth.getText().toString();
@@ -89,10 +87,10 @@ public class SignUpActivity extends Activity {
                 global.phoneNum = phoneNum;
                 global.gender = gender;
 
-                savePreferences("1");
+                //savePreferences("1");
 
-                Intent intent = new Intent(SignUpActivity.this, Tabview.class);
-                startActivity(intent);
+//                Intent intent = new Intent(SignUpActivity.this, Tabview.class);
+//                startActivity(intent);
             }
         });
 

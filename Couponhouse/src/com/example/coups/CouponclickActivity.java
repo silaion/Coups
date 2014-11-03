@@ -1,7 +1,9 @@
 package com.example.coups;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -34,10 +37,10 @@ public class CouponclickActivity extends Activity {
     ImageView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9, iv10;
     Button discouponbuy;
     Button benefit;
-    static HashMap<String, String> temp;
+    HashMap<String, String> temp;
 
     Global global;
-    String s_Stamp, total;
+    String s_Stamp, total, c_number;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,6 @@ public class CouponclickActivity extends Activity {
 
         setContentView(R.layout.couponclick);
         global = new Global();
-        //global = (Global)getApplicationContext();
 
         s_Name = (TextView) findViewById(R.id.s_Name);
         s_Addr = (TextView) findViewById(R.id.s_Addr);
@@ -57,13 +59,11 @@ public class CouponclickActivity extends Activity {
         adapterThread.execute(null, null, null);
 
 
-        // TODO Auto-generated method stub
         discouponbuy = (Button) findViewById(R.id.discouponbuy);
         discouponbuy.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent intent = new Intent(CouponclickActivity.this, BuyActivity.class);
                 startActivity(intent);
             }
@@ -95,7 +95,6 @@ public class CouponclickActivity extends Activity {
     }
 
     class AdapterThread extends AsyncTask<Void, Void, Void> {
-        //ArrayList<HashMap<String, Object>> store;
 
         XmlPullParserFactory factory;
         XmlPullParser parser;
@@ -105,17 +104,27 @@ public class CouponclickActivity extends Activity {
         int eventType;
         boolean inName = false, inAddr = false, inDue_date = false, inCurrent = false, ins_Stamp = false, inTotal = false;
 
+        ProgressBar progressBar;
+        ProgressDialog progressDialog;
+
         @Override
         protected void onPreExecute() {
-            c_Number.setText("회원번호 : " + String.valueOf(global.c_Number));
+            progressDialog = new ProgressDialog(CouponclickActivity.this);
+            progressDialog.setMessage("잠시만 기다려주세요");
+            progressDialog.show();
+            progressBar = new ProgressBar(CouponclickActivity.this);
+            if(global.c_Number == null){
+                getPreferences();
+            }
         }
 
         @Override
         protected Void doInBackground(Void... params) {
+            progressBar.setVisibility(View.VISIBLE);
             try {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(url);
-                List nameValuePairs = new ArrayList(2);
+                List nameValuePairs = new ArrayList();
                 nameValuePairs.add(new BasicNameValuePair("c_number", global.c_Number));
                 nameValuePairs.add(new BasicNameValuePair("s_number", global.s_Number));
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -166,6 +175,7 @@ public class CouponclickActivity extends Activity {
                                 temp.put("S_Stamp", parser.getText());
                             } else if (tagName.equals("Total") && inTotal){
                                 temp.put("Total", parser.getText());
+                                Log.d("Total", parser.getText());
                             }
                             break;
                         case XmlPullParser.END_TAG:
@@ -197,26 +207,47 @@ public class CouponclickActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(Void a) {
-            s_Name.setText(temp.get("Name").toString());
-            s_Addr.setText(temp.get("Addr").toString());
-            s_Due_date.setText(temp.get("Due_Date").toString());
-            s_Stamp = temp.get("S_Stamp").toString();
-            total = temp.get("Total").toString();
+        protected void onPostExecute(Void params) {
+            progressBar.setVisibility(View.INVISIBLE);
+            progressDialog.cancel();
+            try {
+                c_Number.setText("회원번호 : " + String.valueOf(global.c_Number));
+                s_Name.setText(temp.get("Name").toString());
+                s_Addr.setText(temp.get("Addr").toString());
+                s_Due_date.setText(temp.get("Due_Date").toString());
+                s_Stamp = temp.get("S_Stamp").toString();
+                total = temp.get("Total").toString();
 
-            switch(Integer.parseInt(temp.get("Current").toString())){
-                case 10 :iv10.setVisibility(View.VISIBLE);
-                case 9 : iv9.setVisibility(View.VISIBLE);
-                case 8 : iv8.setVisibility(View.VISIBLE);
-                case 7 : iv7.setVisibility(View.VISIBLE);
-                case 6 : iv6.setVisibility(View.VISIBLE);
-                case 5 : iv5.setVisibility(View.VISIBLE);
-                case 4 : iv4.setVisibility(View.VISIBLE);
-                case 3 : iv3.setVisibility(View.VISIBLE);
-                case 2 : iv2.setVisibility(View.VISIBLE);
-                case 1 : iv1.setVisibility(View.VISIBLE); break;
-            }
+                switch (Integer.parseInt(temp.get("Current").toString())) {
+                    case 10:
+                        iv10.setVisibility(View.VISIBLE);
+                    case 9:
+                        iv9.setVisibility(View.VISIBLE);
+                    case 8:
+                        iv8.setVisibility(View.VISIBLE);
+                    case 7:
+                        iv7.setVisibility(View.VISIBLE);
+                    case 6:
+                        iv6.setVisibility(View.VISIBLE);
+                    case 5:
+                        iv5.setVisibility(View.VISIBLE);
+                    case 4:
+                        iv4.setVisibility(View.VISIBLE);
+                    case 3:
+                        iv3.setVisibility(View.VISIBLE);
+                    case 2:
+                        iv2.setVisibility(View.VISIBLE);
+                    case 1:
+                        iv1.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }catch(Exception e){}
         }
     }
 
+    private void getPreferences() {
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        c_number = pref.getString("c_Number", "");
+        global.c_Number = c_number;
+    }
 }

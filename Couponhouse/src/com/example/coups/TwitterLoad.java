@@ -28,7 +28,7 @@ public class TwitterLoad extends Activity{
     private static final String SHARED_PREF_KEY_TWITTER_CONSUMER_SECRET = "TWITTER_CONSUMER_SECRET";
     private static Uri TWITTER_CALLBACK_URL = Uri.parse("http://coups.co.kr");
     private static String msg = "Coupon House";
-    private static String url = "http://172.30.96.200:8081/gcm_jsp/";
+    private static String url = "http://112.172.217.79:8080/gcm_jsp/";
     private Uri uri;
     AsyncTask<?, ?, ?> twiterTask;
     AsyncTask<?, ?, ?> updateTask;
@@ -53,7 +53,7 @@ public class TwitterLoad extends Activity{
 
         uri = intent.getData();
         newIntentTask = new newIntentTask().execute();
-        //TWITTER_Submit();
+        TWITTER_Submit();
     }
 
     public void TWITTER_Submit(){
@@ -67,7 +67,7 @@ public class TwitterLoad extends Activity{
             // SharedPreferences 에 저장된 access token 이 있으면
             // Twitter 객체에 access token 을 설정해 주고 바로 message 를 전송합니다.
             mTwitter.setOAuthAccessToken(accessToken);
-            //TWITTER_UpdateStatus();
+            TWITTER_UpdateStatus();
             updateTask = new updateTask().execute();
         } else{
             // SharedPreferences 에 저장된 accesstoken 이 없으면 인증 절차를 진행하게 됩니다.
