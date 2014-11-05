@@ -8,10 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +31,7 @@ public class BuytwoActivity extends ListActivity {
 
         global = new Global();
         buy = new BuyActivity();
-
+        buy_coupon = new ArrayList<HashMap<String, Object>>(buy.checked_coupon);
         payment = (Button)findViewById(R.id.payment);
         payment.setOnClickListener(new View.OnClickListener() {
 
@@ -46,7 +43,7 @@ public class BuytwoActivity extends ListActivity {
             }
         });
 
-        buy_coupon = new ArrayList<HashMap<String, Object>>(buy.checked_coupon);
+
 
         inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         CustomAdapter adapter = new CustomAdapter(this, R.layout.buylist,buy_coupon);

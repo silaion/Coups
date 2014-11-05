@@ -38,20 +38,38 @@ public class TabTwoActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.tabtwo);
         global = new Global();
 
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        store = new ArrayList<HashMap<String, Object>>();
+        adapterThread = new AdapterThread();
+        adapterThread.execute(null, null, null);
+
+        while(true){
+            try{
+                Thread.sleep(1000);
+                if(adapterThread.flag){
+                    store = adapterThread.store;
+                    break;
+                }
+            }catch(Exception e){}
+        }//while
+
+        CustomAdatper adapter = new CustomAdatper(this, R.layout.favorite, store);
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
         lv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // When clicked, show a toast with the TextView text
+                global.s_Number = store.get(position).get("Number").toString();
                 Intent intent = new Intent(TabTwoActivity.this, InfoclickActivity.class);
                 startActivity(intent);
             }
         });
 
+        lv.setAdapter(adapter);
 
         shoplist = (Button) findViewById(R.id.shoplist);
         shoplist.setOnClickListener(new View.OnClickListener() {
@@ -71,30 +89,16 @@ public class TabTwoActivity extends ListActivity {
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 Intent intent = new Intent(TabTwoActivity.this, MapActivity.class);
+                intent.putExtra("addr", store);
                 startActivity(intent);
             }
         });
-        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
 
         //these arrays are just the data that 
         //I'll be using to populate the ArrayList
         //You can use our own methods to get the data
-        store = new ArrayList<HashMap<String, Object>>();
-        adapterThread = new AdapterThread();
-        adapterThread.execute(null, null, null);
 
-        while(true){
-            try{
-                Thread.sleep(1000);
-                if(adapterThread.flag){
-                    store = adapterThread.store;
-                    break;
-                }
-            }catch(Exception e){}
-        }//while
-
-        CustomAdatper adapter = new CustomAdatper(this, R.layout.favorite, store);
-        lv.setAdapter(adapter);
 
         // TODO Auto-generated method stub
     }
@@ -139,7 +143,7 @@ public class TabTwoActivity extends ListActivity {
         String tagName;
         int eventType;
         boolean flag = false;
-        boolean inName = false, inAddr = false;
+        boolean inName = false, inAddr = false, inNum = false;
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -165,6 +169,8 @@ public class TabTwoActivity extends ListActivity {
                                 inName = true;
                             } else if (tagName.equals("Addr")) {
                                 inAddr = true;
+                            } else if(tagName.equals("Number")){
+                                inNum = true;
                             }
                             break;
                         case XmlPullParser.TEXT:
@@ -172,6 +178,8 @@ public class TabTwoActivity extends ListActivity {
                                 temp.put("Name", parser.getText());
                             } else if (tagName.equals("Addr") && inAddr) {
                                 temp.put("Addr", parser.getText());
+                            } else if(tagName.equals("Number") && inNum){
+                                temp.put("Number", parser.getText());
                             }
                             break;
                         case XmlPullParser.END_TAG:
@@ -182,6 +190,8 @@ public class TabTwoActivity extends ListActivity {
                                 inName = false;
                             } else if (tagName.equals("Addr")) {
                                 inAddr = false;
+                            } else if(tagName.equals("Number")){
+                                inNum = false;
                             }
                             break;
                     }

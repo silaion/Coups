@@ -7,10 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.*;
 
 public class ExistMemberActivity extends Activity {
 
@@ -70,13 +67,28 @@ public class ExistMemberActivity extends Activity {
                 birth = et_birth.getText().toString();
                 phoneNum = et_phoneNum.getText().toString();
 //                change = et_change.getText().toString();
-                Log.d("SharedPreference", name + " " + gender + " " + birth + " " + phoneNum);
+                if(name.equals("") || name.equals("null")){
+                    Toast.makeText(getBaseContext(), "성명 입력란을 확인해주세요", Toast.LENGTH_LONG).show();
+                } else if(birth.equals("")){
+                    Toast.makeText(getBaseContext(), "생년월일을 정확히 입력해주세요", Toast.LENGTH_LONG).show();
+                } else if(phoneNum.equals("")){
+                    Toast.makeText(getBaseContext(), "전화번호를 정확히 입력해주세요.", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d("SharedPreference", name + " " + gender + " " + birth + " " + phoneNum);
 
-                global.name = name;
-                global.gender = gender;
-                global.birth = birth;
-                global.phoneNum = phoneNum;
-                global.change = change;
+                    global.name = name;
+                    global.gender = gender;
+                    global.birth = birth;
+                    global.phoneNum = phoneNum;
+                    global.change = change;
+
+
+                    savePreferences("1");
+
+                    Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
+                    intent.putExtra("tab", "else");
+                    startActivity(intent);
+                }
 
 //                GCMRegistrar.checkDevice(mContext);
 //                GCMRegistrar.checkManifest(mContext);
@@ -87,11 +99,6 @@ public class ExistMemberActivity extends Activity {
 //                    GCMRegistrar.unregister(mContext);
 //                    GCMRegistrar.register(mContext, PROJECT_ID);
 //                }
-                savePreferences(global.c_Number);
-                global.c_Number = "1";
-
-                Intent intent = new Intent(ExistMemberActivity.this, Tabview.class);
-                startActivity(intent);
             }
         });
 
@@ -108,6 +115,7 @@ public class ExistMemberActivity extends Activity {
     }
 
     private void savePreferences(String c_Number){
+        global.c_Number = c_Number;
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("Name", global.name);

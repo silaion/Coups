@@ -35,7 +35,6 @@ public class TabThrActivity extends ListActivity {
     ArrayList<HashMap<String, Object>> searchResults;
     ArrayList<HashMap<String, Object>> store;
     LayoutInflater inflater;
-    Button adjust;
     Global global;
     HttpConnect httpConnect;
     /** Called when the activity is first created. */
@@ -47,7 +46,6 @@ public class TabThrActivity extends ListActivity {
         final EditText searchBox=(EditText) findViewById(R.id.searchBox);
         ListView stampListView=(ListView) findViewById(android.R.id.list);
 
-        //global = (Global)getApplicationContext();
         global = new Global();
 
         ListView lv = getListView();
@@ -60,17 +58,6 @@ public class TabThrActivity extends ListActivity {
                 Intent intent = new Intent(TabThrActivity.this, CouponclickActivity.class);
                 startActivity(intent);
             }});
-
-        adjust = (Button)findViewById(R.id.adjust);
-        adjust.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent intent = new Intent(TabThrActivity.this, CoDelActivity.class);
-                startActivity(intent);
-            }
-        });
 
         inflater=(LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

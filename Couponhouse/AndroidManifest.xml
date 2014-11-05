@@ -17,7 +17,7 @@
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.example.coups.permission.MAPS_RECEIVE"/>
-    <uses-permission android:name="com.google.android.peoviders.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -49,8 +49,7 @@
                 android:value="@string/kakao_app_key" />
         
         <activity android:name=".MainActivity"
-                  android:label="@string/app_name"
-                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+                  android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -59,25 +58,25 @@
 		<activity android:name=".SplashActivity"
 				android:screenOrientation="portrait"
 				android:configChanges="orientation|keyboardHidden"
-				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+				android:theme="@android:style/Theme.NoTitleBar"
 				/>
 		<activity android:name=".ExistMemberActivity"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+		    android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         
 		<activity android:name=".SignUpActivity"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+		    android:theme="@android:style/Theme.NoTitleBar">
         </activity>
 		<activity android:name="LeaveActivity"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="PresentActivity"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="InfoActivity"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="MapActivity"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="Tabview"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="TabOneActivity"
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="TabTwoActivity"
@@ -96,14 +95,12 @@
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="CoDelActivity"
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name="SnsActivity"
-		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="BuyActivity"
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="BuytwoActivity"
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="PresentTwoActivity"
-		    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="usediscouponlistActivity"
 		    android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name="PaymentActivity"

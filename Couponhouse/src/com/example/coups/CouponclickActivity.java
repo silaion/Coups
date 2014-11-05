@@ -32,7 +32,7 @@ public class CouponclickActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
-    TextView s_Name, s_Addr, s_Due_date, c_Number;
+    TextView s_Name, s_Addr, s_Due_date, c_Number, all_Stamp;
     LayoutInflater inflater;
     ImageView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9, iv10;
     Button discouponbuy;
@@ -53,6 +53,7 @@ public class CouponclickActivity extends Activity {
         s_Addr = (TextView) findViewById(R.id.s_Addr);
         s_Due_date = (TextView) findViewById(R.id.s_Due_date);
         c_Number = (TextView) findViewById(R.id.c_Number);
+        all_Stamp = (TextView)findViewById(R.id.s_All_coup);
 
 
         AdapterThread adapterThread = new AdapterThread();
@@ -102,7 +103,7 @@ public class CouponclickActivity extends Activity {
         String url = "http://112.172.217.79:8080/JSP_Server/c_store.jsp";
         String tagName;
         int eventType;
-        boolean inName = false, inAddr = false, inDue_date = false, inCurrent = false, ins_Stamp = false, inTotal = false;
+        boolean inName = false, inAddr = false, inDue_date = false, inCurrent = false, ins_Stamp = false, inTotal = false, inGet = false;
 
         ProgressBar progressBar;
         ProgressDialog progressDialog;
@@ -138,8 +139,6 @@ public class CouponclickActivity extends Activity {
 
                 parser.setInput(is, null);
 
-                //store = new ArrayList<HashMap<String, Object>>();
-
                 eventType = parser.getEventType();
                 while (eventType != XmlPullParser.END_DOCUMENT) { //최초 title테그안에 쓸데없는 내용이 있어서 추가해줬음.
                     switch (eventType) {
@@ -160,6 +159,8 @@ public class CouponclickActivity extends Activity {
                                 ins_Stamp = true;
                             } else if (tagName.equals("Total")){
                                 inTotal = true;
+                            } else if(tagName.equals("Get_Stamp")){
+                                inGet = true;
                             }
                             break;
                         case XmlPullParser.TEXT:
@@ -176,6 +177,8 @@ public class CouponclickActivity extends Activity {
                             } else if (tagName.equals("Total") && inTotal){
                                 temp.put("Total", parser.getText());
                                 Log.d("Total", parser.getText());
+                            } else if (tagName.equals("Get_Stamp") && inGet){
+                                temp.put("All_Stamp", parser.getText());
                             }
                             break;
                         case XmlPullParser.END_TAG:
@@ -194,6 +197,8 @@ public class CouponclickActivity extends Activity {
                                 ins_Stamp = false;
                             } else if (tagName.equals("Total")){
                                 inTotal = false;
+                            } else if(tagName.equals("Get_Stamp")){
+                                inGet = false;
                             }
                             break;
                     }
@@ -215,8 +220,10 @@ public class CouponclickActivity extends Activity {
                 s_Name.setText(temp.get("Name").toString());
                 s_Addr.setText(temp.get("Addr").toString());
                 s_Due_date.setText(temp.get("Due_Date").toString());
+                all_Stamp.setText("다 모은 쿠폰 수 : " + temp.get("All_Stamp"));
                 s_Stamp = temp.get("S_Stamp").toString();
                 total = temp.get("Total").toString();
+
 
                 switch (Integer.parseInt(temp.get("Current").toString())) {
                     case 10:

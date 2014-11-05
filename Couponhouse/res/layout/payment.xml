@@ -52,5 +52,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:textSize="25dp"/>
+    <Button
+            android:id="@+id/ret"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text=" 확인 "
+            android:layout_alignBottom="@android:id/list"
+            android:layout_alignRight="@id/total"/>
 
 </RelativeLayout>

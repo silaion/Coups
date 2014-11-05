@@ -32,7 +32,7 @@
         android:layout_below="@+id/imageView2"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="31dp"
-        android:text="한경카페"
+        android:text="가게 이름"
         android:textSize="25dp"
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -44,7 +44,7 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="24dp"
-        android:text="경기도 안성시 한경대학교"
+        android:text="주소"
         android:textSize="20dp"
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -56,7 +56,7 @@
         android:layout_alignLeft="@+id/textView3"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="30dp"
-        android:text="맛있는 음료를 저렴한 가격에 판매하고 있습니다"
+        android:text="내용"
         android:textSize="20dp"
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -68,7 +68,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="30dp"
-        android:layout_marginRight="26dp"
+        android:layout_marginRight="30dp"
         android:text="페이스북" />
 
     <TextView
@@ -86,9 +86,8 @@
         android:id="@+id/kakao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/twitter"
-        android:layout_alignBottom="@+id/twitter"
-        android:layout_centerHorizontal="true"
+        android:layout_alignBaseline="@+id/facebook"
+        android:layout_alignLeft="@id/textView1"
         android:text="카카오톡" />
 
     <Button
@@ -97,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/facebook"
         android:layout_alignBottom="@+id/facebook"
-        android:layout_toLeftOf="@+id/textView1"
+        android:layout_alignLeft="@id/textView2"
         android:text="트위터" />
 
 </RelativeLayout>

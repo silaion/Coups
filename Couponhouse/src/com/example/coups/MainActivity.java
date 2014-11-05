@@ -70,6 +70,7 @@ public class MainActivity extends Activity {
 
         if(!c_Number.equals("")){
             Intent intent = new Intent(MainActivity.this, Tabview.class);
+            intent.putExtra("tab", "else");
             startActivity(intent);
         }
     }

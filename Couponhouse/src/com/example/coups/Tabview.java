@@ -17,7 +17,6 @@ public class Tabview extends TabActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main);
         Resources res = getResources();
         // Resource object to get Drawables
@@ -50,7 +49,17 @@ public class Tabview extends TabActivity {
         tabHost.getTabWidget().getChildAt(2).setBackgroundColor(Color.parseColor("#00BFFF"));
         tabHost.getTabWidget().getChildAt(3).setBackgroundColor(Color.parseColor("#00BFFF"));
         tabHost.getTabWidget().getChildAt(4).setBackgroundColor(Color.parseColor("#00BFFF"));
-        tabHost.setCurrentTab(0);
+
+        Intent i = getIntent();
+        String setNum = i.getExtras().get("tab").toString();
+        if(setNum.equals("two")){
+            tabHost.setCurrentTab(1);
+        }else if(setNum.equals("third")){
+            tabHost.setCurrentTab(2);
+        }else if(setNum.equals("four")){
+            tabHost.setCurrentTab(3);
+        }else
+            tabHost.setCurrentTab(0);
 
     }
 

@@ -2,6 +2,7 @@ package com.example.coups;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import org.apache.http.HttpResponse;
@@ -33,6 +35,7 @@ public class PaymentActivity extends ListActivity {
     ArrayList<HashMap<String, Object>> store;
     String total;
     TextView Total;
+    Button ret;
 
 
 	/** Called when the activity is first created. */
@@ -45,6 +48,15 @@ public class PaymentActivity extends ListActivity {
         lv.setTextFilterEnabled(true);
 
         Total = (TextView)findViewById(R.id.total);
+        ret = (Button)findViewById(R.id.ret);
+        ret.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PaymentActivity.this, Tabview.class);
+                intent.putExtra("tab", "four");
+                startActivity(intent);
+            }
+        });
 
         buy = new BuyActivity();
 
@@ -70,7 +82,6 @@ public class PaymentActivity extends ListActivity {
 
 
         CustomAdapter adapter = new CustomAdapter(this, R.layout.buylist,store);
-        //finally,set the adapter to the default ListView
         setListAdapter(adapter);
 	}
 

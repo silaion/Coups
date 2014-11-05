@@ -51,12 +51,15 @@ public class BuyActivity extends ListActivity {
 
         buy = (Button) findViewById(R.id.buy);
         buy.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Intent intent = new Intent(BuyActivity.this, BuytwoActivity.class);
-                startActivity(intent);
+                if(checked_coupon.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "구매하실 쿠폰을 선택해주세요.", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(BuyActivity.this, BuytwoActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -81,7 +84,6 @@ public class BuyActivity extends ListActivity {
         final CustomAdapter adapter = new CustomAdapter(this, R.layout.discountsell, searchResults);
         Dis_CouponListView.setAdapter(adapter);
         searchBox.addTextChangedListener(new TextWatcher() {
-
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //get the text in the EditText
                 String searchString = searchBox.getText().toString();

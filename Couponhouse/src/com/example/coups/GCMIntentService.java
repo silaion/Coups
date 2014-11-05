@@ -22,7 +22,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 
-import java.net.URLDecoder;
 import java.util.HashMap;
 
 public class GCMIntentService extends GCMBaseIntentService {
@@ -140,12 +139,14 @@ public class GCMIntentService extends GCMBaseIntentService {
                 Toast.makeText(mContext, "Coups에 가입 되신것을 환영합니다.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되었습니다.");
                 Intent intent = new Intent(mContext, Tabview.class);
+                intent.putExtra("tab", "else");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else if(result.equals("changed")){
                 Toast.makeText(mContext, "고객님의 정보가 성공적으로 수정되었습니다.", Toast.LENGTH_LONG).show();
                 Log.d("regid", "데이터베이스에 regid가 등록되었습니다.");
                 Intent intent = new Intent(mContext, Tabview.class);
+                intent.putExtra("tab", "else");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
@@ -190,39 +191,65 @@ public class GCMIntentService extends GCMBaseIntentService {
     // GCM이 메시지를 보내왔을때 발생하는 메소드
     @Override
     protected void onMessage(Context arg0, Intent arg1) {
+        String s_Number, c_Number;
         // TODO Auto-generated method stub
         gcm_msg = arg1.getExtras().getString("test");
         Log.d("gcm_msg", gcm_msg);
         if (gcm_msg.startsWith("N_")) {
-            String c_Number = gcm_msg.substring(2);
+            c_Number = gcm_msg.substring(2);
             global.c_Number = c_Number;
             savePreferences(c_Number);
             Log.d("Customer Number", String.valueOf(global.c_Number));
         } else if(gcm_msg.startsWith("SAdd_")){
-            String s_Number = gcm_msg.substring(2);
+            s_Number = gcm_msg.substring(5);
             global.s_Number = s_Number;
             Log.d("Store Number", String.valueOf(global.s_Number));
             try {
-                //gcm_msg = URLDecoder.decode(gcm_msg, "EUC-KR");
                 Vibrator vibrator =
                         (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
-                //vibrator.vibrate(pattern, -1);
                 vibrator.vibrate(3000);
-                setNotification(arg0, "도장쿠폰이 추가되었습니다.");
+                setNotification(arg0, "도장쿠폰이 추가되었습니다.", "third");
             } catch (Exception e) {
                 Log.e("GCM_onMessage", "failed");
             }
             Log.d("test", "메시지가 왔습니다 : " + gcm_msg);
             showMessage();
-        } else{
+        } else if(gcm_msg.startsWith("Suse_")) {
+            s_Number = gcm_msg.substring(5);
+            global.s_Number = s_Number;
+            Log.d("Store Number", String.valueOf(global.s_Number));
+            try {
+                Vibrator vibrator =
+                        (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(3000);
+                setNotification(arg0, "도장쿠폰이 소모 되었습니다.", "third");
+            } catch (Exception e) {
+                Log.e("GCM_onMessage", "failed");
+            }
+            Log.d("test", "메시지가 왔습니다 : " + gcm_msg);
+            showMessage();
+        }else if(gcm_msg.startsWith("Duse_")){
+            c_Number = gcm_msg.substring(5);
+            global.s_Number = c_Number;
+            Log.d("Store Number", String.valueOf(global.s_Number));
+            try {
+                Vibrator vibrator =
+                        (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(3000);
+                setNotification(arg0, "할인쿠폰이 소모 되었습니다.", "four");
+            } catch (Exception e) {
+                Log.e("GCM_onMessage", "failed");
+            }
+            Log.d("test", "메시지가 왔습니다 : " + gcm_msg);
+            showMessage();
+        }else{
             long[] pattern = {0, 3000, 100, 3000,100};
             try {
-                gcm_msg = URLDecoder.decode(gcm_msg, "EUC-KR");
+                //gcm_msg = URLDecoder.decode(gcm_msg, "EUC-KR");
                 Vibrator vibrator =
                         (Vibrator) arg0.getSystemService(Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(pattern, -1);
-                //vibrator.vibrate(3000);
-                setNotification(arg0, "도장쿠폰이 추가되었습니다.");
+                setNotification(arg0, "주문하신 음식이 나왔습니다.", "else");
             } catch (Exception e) {
                 Log.e("GCM_onMessage", "failed");
             }
@@ -231,14 +258,15 @@ public class GCMIntentService extends GCMBaseIntentService {
         }
     }
     @SuppressWarnings("deprecation")
-    private void setNotification(Context context, String message) {
+    private void setNotification(Context context, String message, String extra) {
         long when = System.currentTimeMillis();
         try {
             NotificationManager notificationManager =
                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             Notification notification = new Notification(R.drawable.icon, message, when);
             String title = context.getString(R.string.app_name);
-            Intent notificationIntent = new Intent(context, CouponclickActivity.class);
+            Intent notificationIntent = new Intent(context, Tabview.class);
+            notificationIntent.putExtra("tab", extra);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             notification.setLatestEventInfo(context, title, message, intent);
